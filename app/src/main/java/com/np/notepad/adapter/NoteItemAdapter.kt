@@ -2,6 +2,7 @@ package com.np.notepad.adapter
 
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.np.notepad.R
 import com.np.notepad.model.NoteItem
 
 /**
@@ -10,9 +11,17 @@ import com.np.notepad.model.NoteItem
  */
 class NoteItemAdapter(
     layoutId:Int,
-    data:MutableList<NoteItem>? = null
-): BaseQuickAdapter<NoteItem, BaseViewHolder>(layoutId, data){
+    data:MutableList<NoteItem>? = null,
+    itemCount:Int
+): BaseQuickAdapter<NoteItem, BaseViewHolder>(layoutId, data) {
+
+    init {if (data!!.size == 0 && itemCount != 0) {
+            for (i in 1..itemCount) {
+                data.add(NoteItem())
+            }
+        }}
+
     override fun convert(helper: BaseViewHolder, item: NoteItem?) {
-        //To change body of created functions use File | Settings | File Templates.
+        helper.setText(R.id.textView, "" + (helper.adapterPosition + 1))
     }
 }
