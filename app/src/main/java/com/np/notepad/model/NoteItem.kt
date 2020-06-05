@@ -9,14 +9,14 @@ import java.util.*
  * @author z f
  */
 data class NoteItem (
-    private var id: Int = 0,
-    private var title: String = "",
-    private var content: String = "",
-    private var backgroundColor: Int = Color.WHITE,
+    var id: Int = 0,
+    var title: String = "",
+    var content: String = "",
+    var backgroundColor: Int = Color.WHITE,
     /**置顶*/
-    private var top: Boolean = false,
+    var top: Boolean = false,
     /**强提醒*/
-    private var remind: Boolean = false,
+    var remind: Boolean = false,
     /**笔记类别*/
-    private var noteType: String = NoteTypeEnum.DEFAULT.code,
-    private var lastUpdateTime: Date = Date())
+    var noteType: String = NoteTypeEnum.DEFAULT.code,
+    var lastUpdateTime: Date = Date())

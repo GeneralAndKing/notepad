@@ -10,5 +10,7 @@ class ConstUtils private constructor() {
          * APP名称
          */
         const val APP_NAME: String = "记得做"
+
+        const val ITEM_ID: String = "itemId"
     }
 }
