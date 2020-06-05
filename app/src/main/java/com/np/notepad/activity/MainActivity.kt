@@ -12,7 +12,7 @@ import com.np.notepad.R
 import com.np.notepad.base.BaseFragmentActivity
 import com.np.notepad.fragment.ContentFragment
 import com.np.notepad.fragment.HomeFragment
-import com.np.notepad.manager.QDSkinManager
+import com.np.notepad.manager.SkinManager
 import com.qmuiteam.qmui.arch.SwipeBackLayout
 import com.qmuiteam.qmui.arch.annotation.DefaultFirstFragment
 import com.qmuiteam.qmui.arch.annotation.FirstFragments
@@ -44,7 +44,7 @@ class MainActivity : BaseFragmentActivity() {
 
     private val mOnSkinChangeListener =
         OnSkinChangeListener { skinManager, oldSkin, newSkin ->
-            if (newSkin == QDSkinManager.SKIN_WHITE) {
+            if (newSkin == SkinManager.SKIN_WHITE) {
                 QMUIStatusBarHelper.setStatusBarLightMode(this)
             } else {
                 QMUIStatusBarHelper.setStatusBarDarkMode(this)
@@ -269,7 +269,7 @@ class MainActivity : BaseFragmentActivity() {
                             .addItems(
                                 items
                             ) { dialog, which ->
-                                QDSkinManager.changeSkin(which + 1)
+                                SkinManager.changeSkin(which + 1)
                                 dialog.dismiss()
                             }
                             .setSkinManager(QMUISkinManager.defaultInstance(context))

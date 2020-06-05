@@ -24,7 +24,7 @@ import com.qmuiteam.qmui.skin.QMUISkinManager;
 
 import java.util.Objects;
 
-public class QDSkinManager {
+public class SkinManager {
     public static final int SKIN_BLUE = 1;
     public static final int SKIN_DARK = 2;
     public static final int SKIN_WHITE = 3;
@@ -37,7 +37,7 @@ public class QDSkinManager {
         skinManager.addSkin(SKIN_WHITE, R.style.app_skin_white);
         boolean isDarkMode = (context.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-        int storeSkinIndex = QDPreferenceManager.getInstance(context).getSkinIndex();
+        int storeSkinIndex = PreferenceManager.getInstance(context).getSkinIndex();
         if (isDarkMode && storeSkinIndex != SKIN_DARK) {
             skinManager.changeSkin(SKIN_DARK);
         } else if (!isDarkMode && storeSkinIndex == SKIN_DARK) {
@@ -49,7 +49,7 @@ public class QDSkinManager {
 
     public static void changeSkin(int index) {
         QMUISkinManager.defaultInstance(Objects.requireNonNull(NoteApplication.Companion.getContext())).changeSkin(index);
-        QDPreferenceManager.getInstance(Objects.requireNonNull(NoteApplication.Companion.getContext())).setSkinIndex(index);
+        PreferenceManager.getInstance(Objects.requireNonNull(NoteApplication.Companion.getContext())).setSkinIndex(index);
     }
 
     public static int getCurrentSkin() {
