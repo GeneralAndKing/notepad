@@ -72,7 +72,7 @@ class HomeFragment : BaseFragment() {
             )
             val fragment = ContentFragment()
             val args = Bundle()
-            args.putInt(ITEM_ID, item.id)
+            args.putLong(ITEM_ID, item.id)
             fragment.arguments = args
             startFragment(fragment)
         }
