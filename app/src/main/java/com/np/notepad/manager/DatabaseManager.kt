@@ -4,7 +4,15 @@ import com.np.notepad.model.NoteItem
 import org.litepal.LitePal
 import org.litepal.extension.*
 
-class DatabaseManager {
+class DatabaseManager private constructor() {
+
+  companion object {
+    fun getInstance() = SingleHolder.INSTANCE
+  }
+
+  object SingleHolder {
+    val INSTANCE: DatabaseManager = DatabaseManager()
+  }
 
   /**
    * find all title.

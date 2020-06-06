@@ -14,12 +14,12 @@ import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
 import com.np.notepad.util.LoggerUtils
 import java.util.*
 
+
 class HomeFragment : BaseFragment() {
     //绑定XML布局文件
     private lateinit var binding: FragmentCollapsingTopbarLayoutBinding
     //适配器
-    private var mRecyclerViewAdapter: NoteItemAdapter =
-        NoteItemAdapter(R.layout.note_item, ArrayList(), 10)
+    private lateinit var mRecyclerViewAdapter: NoteItemAdapter
 
     override fun onCreateView(): View {
         binding = FragmentCollapsingTopbarLayoutBinding.inflate(
@@ -28,10 +28,6 @@ class HomeFragment : BaseFragment() {
         initTopBar()
         initList()
         return binding.root
-    }
-
-    override fun translucentFull(): Boolean {
-        return true
     }
 
     /**
@@ -57,6 +53,7 @@ class HomeFragment : BaseFragment() {
      * 初始化内容列表
      */
     private fun initList() {
+        mRecyclerViewAdapter = NoteItemAdapter(R.layout.note_item, ArrayList(), 10, requireContext())
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         //开启动画效果
         mRecyclerViewAdapter.openLoadAnimation()
@@ -64,23 +61,31 @@ class HomeFragment : BaseFragment() {
         mRecyclerViewAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN)
         //添加分割线
 //        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        //设置Item点击事件
-        mRecyclerViewAdapter.setOnItemClickListener { _, _, position ->
+        //设置Item子控件点击事件
+        mRecyclerViewAdapter.setOnItemChildClickListener { _, view, position ->
             val item = mRecyclerViewAdapter.getItem(position)!!
-            LoggerUtils.i(
-                "onItemClick：$position"
-            )
-            val fragment = ContentFragment()
-            val args = Bundle()
-            args.putLong(ITEM_ID, item.id)
-            fragment.arguments = args
-            startFragment(fragment)
+            when(view.id) {
+                R.id.textView -> {
+                    val fragment = ContentFragment()
+                    val args = Bundle()
+                    args.putLong(ITEM_ID, item.id)
+                    fragment.arguments = args
+                    startFragment(fragment)
+                }
+                R.id.btnRemind -> LoggerUtils.i("click btnRemind")
+                R.id.btnDelete -> LoggerUtils.i("click btnDelete")
+            }
         }
         //设置适配器
         binding.recyclerView.adapter = mRecyclerViewAdapter
     }
 
+    override fun translucentFull(): Boolean = true
+
     override fun canDragBack(): Boolean = false
 
+    /**
+     * 上一页
+     */
     override fun onLastFragmentFinish(): Any = null!!
 }

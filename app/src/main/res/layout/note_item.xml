@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"
+    android:layout_margin="@dimen/dp_10"
+    android:gravity="center_vertical"
+    android:paddingLeft="?attr/qmui_content_padding_horizontal"
+    android:paddingRight="?attr/qmui_content_padding_horizontal"
+    app:ios="false"
+    app:leftSwipe="true"
+    app:swipeEnable="true">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
         android:background="@drawable/pager_layout_item_bg"
         android:gravity="center"
         android:textColor="#fff"
         android:textSize="40sp"/>
-</RelativeLayout>
+
+    <!-- 以下都是侧滑菜单的内容依序排列 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnRemind"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginStart="@dimen/dp_20"
+            android:background="@drawable/btn_remind"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginStart="@dimen/dp_20"
+            android:background="@drawable/btn_delete"
+            tools:ignore="ButtonStyle" />
+    </LinearLayout>
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>
