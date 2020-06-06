@@ -2,17 +2,16 @@ package com.np.notepad.fragment
 
 import android.view.LayoutInflater
 import android.view.View
-import com.np.notepad.R
 import com.np.notepad.base.BaseFragment
-import com.np.notepad.databinding.FragmentCollapsingTopbarLayoutBinding
+import com.np.notepad.databinding.FragmentContentLayoutBinding
 import com.np.notepad.util.LoggerUtils
 
 class ContentFragment: BaseFragment() {
     //绑定XML布局文件
-    private lateinit var binding: FragmentCollapsingTopbarLayoutBinding
+    private lateinit var binding: FragmentContentLayoutBinding
 
     override fun onCreateView(): View {
-        binding = FragmentCollapsingTopbarLayoutBinding.inflate(LayoutInflater.from(activity), null, false)
+        binding = FragmentContentLayoutBinding.inflate(LayoutInflater.from(activity), null, false)
         initTopBar()
         if (arguments != null) {
             LoggerUtils.i(arguments.toString())
@@ -25,8 +24,8 @@ class ContentFragment: BaseFragment() {
      */
     private fun initTopBar() {
         binding.topbar.addLeftBackImageButton()
-            .setOnClickListener {popBackStack()}
-        binding.collapsingTopbarLayout.title = getString(R.string.app_name)
+            .setOnClickListener { popBackStack() }
+        binding.topbar.setTitle("")
     }
 
     override fun translucentFull(): Boolean {

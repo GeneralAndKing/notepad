@@ -3,13 +3,12 @@ package com.np.notepad.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.np.notepad.R
 import com.np.notepad.adapter.NoteItemAdapter
 import com.np.notepad.base.BaseFragment
-import com.np.notepad.databinding.FragmentCollapsingTopbarLayoutBinding
+import com.np.notepad.databinding.FragmentHomeLayoutBinding
 import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
 import com.np.notepad.util.LoggerUtils
 import java.util.*
@@ -17,12 +16,12 @@ import java.util.*
 
 class HomeFragment : BaseFragment() {
     //绑定XML布局文件
-    private lateinit var binding: FragmentCollapsingTopbarLayoutBinding
+    private lateinit var binding: FragmentHomeLayoutBinding
     //适配器
     private lateinit var mRecyclerViewAdapter: NoteItemAdapter
 
     override fun onCreateView(): View {
-        binding = FragmentCollapsingTopbarLayoutBinding.inflate(
+        binding = FragmentHomeLayoutBinding.inflate(
             LayoutInflater.from(activity), null, false
         )
         initTopBar()
@@ -34,16 +33,16 @@ class HomeFragment : BaseFragment() {
      * 初始化bar
      */
     private fun initTopBar() {
-        binding.topbar.addLeftBackImageButton()
-            .setOnClickListener {
-                Toast.makeText(context, "点击返回", Toast.LENGTH_SHORT).show()
-            }
+//        binding.topbar.addLeftBackImageButton()
+//            .setOnClickListener {
+//                Toast.makeText(context, "点击返回", Toast.LENGTH_SHORT).show()
+//            }
+        binding.topbar.addRightImageButton(R.mipmap.icon_topbar_overflow, R.id.topbar_right_change_button)
+            .setOnClickListener {LoggerUtils.i("点击了右按钮")}
         binding.collapsingTopbarLayout.title = getString(R.string.app_name)
-
         binding.collapsingTopbarLayout.setScrimUpdateListener { animation ->
             LoggerUtils.i("scrim: " + animation.animatedValue)
         }
-
         binding.collapsingTopbarLayout.addOnOffsetUpdateListener { _, offset, expandFraction ->
             LoggerUtils.i("offset = $offset; expandFraction = $expandFraction")
         }
