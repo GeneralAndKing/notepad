@@ -29,16 +29,16 @@
         android:orientation="horizontal">
         <Button
             android:id="@+id/btnRemind"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
             android:layout_marginStart="@dimen/dp_20"
             android:background="@drawable/btn_remind"
             tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/btnDelete"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
             android:layout_marginStart="@dimen/dp_20"
             android:background="@drawable/btn_delete"
             tools:ignore="ButtonStyle" />
