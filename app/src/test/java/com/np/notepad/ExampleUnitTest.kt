@@ -1,8 +1,13 @@
 package com.np.notepad
 
+import android.graphics.Color
+import com.np.notepad.manager.DatabaseManager
+import com.np.notepad.model.NoteItem
+import com.np.notepad.model.enums.NoteTypeEnum
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.util.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -17,12 +22,23 @@ class ExampleUnitTest {
 
   @Test
   fun test() {
-      val list = emptyList<Long>().toMutableList()
-      list.add(2)
-      list.add(4)
-      list.add(5)
-      list.add(6)
-      list.add(7)
-      print(list.toString().substring(1,list.toString().length-1))
+    val list = emptyList<Long>().toMutableList()
+    list.add(2)
+    list.add(4)
+    list.add(5)
+    list.add(6)
+    list.add(7)
+    print(list.toString().substring(1, list.toString().length - 1))
+  }
+
+  @Test
+  fun save() {
+    val note = NoteItem()
+    note.title = "今天晚上要去吃小龙虾！"
+    note.content = "配料：xxx想学习惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻寻寻寻学习嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻"
+    note.lastUpdateTime = Date()
+    note.noteType = NoteTypeEnum.DEFAULT
+    note.backgroundColor = Color.BLUE
+    print(note.save())
   }
 }

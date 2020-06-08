@@ -55,4 +55,7 @@ dependencies {
     implementation "com.qmuiteam:qmui:$qmui_version"
     implementation "com.qmuiteam:arch:$qmui_version"
     kapt "com.qmuiteam:arch-compiler:$qmui_version"
+    // 富文本
+//    implementation 'com.github.yuruiyin:RichEditor:latest-version'
+    implementation 'com.google.android:flexbox:1.0.0'
 }

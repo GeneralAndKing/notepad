@@ -19,6 +19,6 @@ data class NoteItem (
     /**强提醒*/
     var remind: Boolean = false,
     /**笔记类别*/
-    var noteType: String = NoteTypeEnum.DEFAULT.code,
+    var noteType: NoteTypeEnum = NoteTypeEnum.DEFAULT,
     var lastUpdateTime: Date = Date()
 ): LitePalSupport()

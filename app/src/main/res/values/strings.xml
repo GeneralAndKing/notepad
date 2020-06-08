@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">记得做</string>
     <string name="common_example">示例图片</string>
+    <string name="ivUnderline">下划线</string>
+    <string name="ivStrikeThrough">删除线</string>
+    <string name="ivItalic">斜体</string>
+    <string name="ivBold">粗体</string>
 </resources>

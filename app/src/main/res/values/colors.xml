@@ -51,4 +51,12 @@
     <color name="note_transparent_blue">#802BBDF3</color>
     <color name="note_black">#000000</color>
     <color name="note_grey">#646464</color>
+
+    <!-- 富文本 -->
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="base_white">#ffffffff</color>
+    <color name="headline_normal_text_color">#ff1c1c1c</color>
+    <color name="headline_light_text_color">#ff0cc975</color>
 </resources>
