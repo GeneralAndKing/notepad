@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.np.notepad" >
+    package="com.np.notepad">
 
     <application
+        android:name=".NoteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".NoteApplication"
         tools:ignore="AllowBackup">
-        <!--适配全面屏和挖孔屏，我们需要添加一些 meta-data-->
+        <!-- 适配全面屏和挖孔屏，我们需要添加一些 meta-data -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true"/>
+            android:value="true" />
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.34"/>
+            android:value="2.34" />
         <meta-data
             android:name="notch.config"
-            android:value="portrait|landscape"/>
-        <!--开屏页-->
+            android:value="portrait|landscape" /> <!-- 开屏页 -->
         <activity
-            android:name="com.np.notepad.activity.LauncherActivity"
+            android:name=".activity.LauncherActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-        </activity>
-        <!--主页-->
-        <activity android:name="com.np.notepad.activity.MainActivity"
-            android:label="@string/app_name"
+        </activity> <!-- 主页 -->
+        <activity
+            android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     </application>
 
 </manifest>

@@ -31,11 +31,11 @@ class ContentFragment : BaseFragment() {
     private fun initTopBar() {
         binding.topbar.addLeftBackImageButton()
             .setOnClickListener { popBackStack() }
-        binding.topbar.setTitle("")
-//        val inflate = TopbarRightViewLayoutBinding.inflate(layoutInflater)
-//        binding.topbar.addRightView(
-//            inflate.root,
-//            R.id.topbar_right_view)
+        binding.topbar.setTitle("编辑事件")
+        val inflate = TopbarRightViewLayoutBinding.inflate(layoutInflater)
+        binding.topbar.addRightView(
+            inflate.root,
+            R.id.topbar_right_view)
         binding.topbar.addRightImageButton(R.mipmap.icon_confirm, R.id.topbar_right_change_button)
             .setOnClickListener { LoggerUtils.i("点击了保存按钮") }
     }
@@ -111,8 +111,8 @@ class ContentFragment : BaseFragment() {
       .setIvIcon(ivHeadline)       // 图标ImageView，用于修改高亮状态
       .setIconNormalResId(R.mipmap.icon_headline_normal)  // 正常图标
       .setIconLightResId(R.mipmap.icon_headline_light)    // 高亮图标
-      .setClickedView(vgHeadline)  // 指定被点击的view
-      .setTvTitle(tvHeadline)      // 按钮标题文字
+//      .setClickedView(vgHeadline)  // 指定被点击的view
+//      .setTvTitle(tvHeadline)      // 按钮标题文字
       .setTitleNormalColor(
         ContextCompat.getColor(
           requireContext(),

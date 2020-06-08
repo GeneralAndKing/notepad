@@ -5,4 +5,5 @@
     <string name="ivStrikeThrough">删除线</string>
     <string name="ivItalic">斜体</string>
     <string name="ivBold">粗体</string>
+    <string name="ivHeadline">标题</string>
 </resources>
