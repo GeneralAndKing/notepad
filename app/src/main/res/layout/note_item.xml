@@ -20,11 +20,9 @@
         android:paddingEnd="@dimen/dp_18"
         android:paddingTop="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_10"
-        android:background="@drawable/pager_layout_item_bg"
         android:gravity="start|center_vertical"
         android:lineSpacingMultiplier="1.5"
-        android:text="@string/app_name"
-        android:textSize="18sp"/>
+        android:text="@string/app_name"/>
 
     <!-- 以下都是侧滑菜单的内容依序排列 -->
     <LinearLayout
@@ -33,19 +31,35 @@
         android:gravity="center"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/btnTopping"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginStart="@dimen/dp_18"
+            android:background="@drawable/icon_topping"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/btnSkin"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/icon_skin"
+            tools:ignore="ButtonStyle" />
+
+        <Button
             android:id="@+id/btnRemind"
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
-            android:layout_marginStart="@dimen/dp_20"
-            android:background="@drawable/btn_remind"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/icon_remind"
             tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
-            android:layout_marginStart="@dimen/dp_20"
-            android:background="@drawable/btn_delete"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/icon_delete"
             tools:ignore="ButtonStyle" />
     </LinearLayout>
 
