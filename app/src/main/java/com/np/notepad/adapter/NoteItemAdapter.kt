@@ -8,9 +8,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.np.notepad.R
 import com.np.notepad.model.NoteItem
+import com.np.notepad.model.enums.BackgroundTypeEnum
 import com.np.notepad.util.ColorUtils
 import com.np.notepad.util.DateUtils
+import com.np.notepad.util.LoggerUtils
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 记事本列表的适配器
@@ -28,12 +31,17 @@ class NoteItemAdapter(
         if (data!!.size == 0 && itemCount != 0) {
             for (i in 1..itemCount) {
                 val noteItem = NoteItem()
-                noteItem.title = "标题"
+                noteItem.title = "标题$i"
                 noteItem.lastUpdateTime = Date()
+                noteItem.background = BackgroundTypeEnum.GREEN
+                if (i == 2 || i == 3 ||i == 5) {
+                    noteItem.top = true
+                }
                 data.add(noteItem)
             }
         }
     }
+    val noteItemTops: MutableList<Int> = ArrayList()
 
     override fun convert(helper: BaseViewHolder, item: NoteItem?) {
         // data color
@@ -56,10 +64,22 @@ class NoteItemAdapter(
             getDateTimeByFormat(item?.lastUpdateTime, DateUtils.DATE_TIME_FORMAT_1) +
               "</small></font>")
         }
-        helper.setText(R.id.textView, text)
-            .addOnClickListener(
-                R.id.textView,
-                R.id.btnDelete,
-                R.id.btnRemind)
+        item?.background?.resId?.let {
+            if (item.top) {
+                //设置置顶和颜色
+                noteItemTops.add(helper.adapterPosition)
+                LoggerUtils.i("noteItemTopsSize=${noteItemTops.size}")
+            }
+            helper.setText(R.id.textView, text)
+                .setBackgroundRes(R.id.textView, it)
+                .addOnClickListener(
+                    R.id.textView,
+                    R.id.btnDelete,
+                    R.id.btnRemind,
+                    R.id.btnSkin,
+                    R.id.btnTopping)
+        } to {
+            LoggerUtils.e("item?.background?.resId? null error")
+        }
     }
 }
