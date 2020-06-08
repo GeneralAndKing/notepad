@@ -12,7 +12,7 @@ public @interface UndoRedoActionTypeEnum {
     /**
      * 增加字符
      */
-    String ADD = "add";
+    String ADD = "icon_add";
 
     /**
      * 删除字符

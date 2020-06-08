@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightLarge"
-    android:layout_margin="@dimen/dp_10"
+    android:layout_marginStart="@dimen/dp_18"
+    android:layout_marginEnd="@dimen/dp_18"
+    android:layout_marginBottom="@dimen/dp_8"
     android:gravity="center_vertical"
-    android:paddingLeft="?attr/qmui_content_padding_horizontal"
-    android:paddingRight="?attr/qmui_content_padding_horizontal"
     app:ios="false"
     app:leftSwipe="true"
     app:swipeEnable="true">
@@ -16,10 +16,15 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="@dimen/dp_18"
+        android:paddingEnd="@dimen/dp_18"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
         android:background="@drawable/pager_layout_item_bg"
-        android:gravity="center"
-        android:textColor="#fff"
-        android:textSize="40sp"/>
+        android:gravity="start|center_vertical"
+        android:lineSpacingMultiplier="1.5"
+        android:text="@string/app_name"
+        android:textSize="18sp"/>
 
     <!-- 以下都是侧滑菜单的内容依序排列 -->
     <LinearLayout

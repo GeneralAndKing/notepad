@@ -28,11 +28,12 @@ class ContentFragment: BaseFragment() {
         binding.topbar.addLeftBackImageButton()
             .setOnClickListener { popBackStack() }
         binding.topbar.setTitle("")
-        //bar右边view
-        val inflate = TopbarRightViewLayoutBinding.inflate(layoutInflater)
-        binding.topbar.addRightView(
-            inflate.root,
-            R.id.topbar_right_view)
+//        val inflate = TopbarRightViewLayoutBinding.inflate(layoutInflater)
+//        binding.topbar.addRightView(
+//            inflate.root,
+//            R.id.topbar_right_view)
+        binding.topbar.addRightImageButton(R.mipmap.icon_confirm, R.id.topbar_right_change_button)
+            .setOnClickListener { LoggerUtils.i("点击了保存按钮") }
     }
 
     override fun translucentFull(): Boolean = true

@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
- Tencent is pleased to support the open source community by making QMUI_Android available.
-
- Copyright (C) 2017-2018 THL A29 Limited, a Tencent company. All rights reserved.
-
- Licensed under the MIT License (the "License"); you may not use this file except in
- compliance with the License. You may obtain a copy of the License at
-
- http://opensource.org/licenses/MIT
-
- Unless required by applicable law or agreed to in writing, software distributed under the License is
- distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- either express or implied. See the License for the specific language governing permissions and
- limitations under the License.
--->
-
 <resources>
     <!-- common -->
     <color name="app_color_blue">#00A8E1</color>
@@ -59,4 +43,12 @@
 
     <!-- 自定义 -->
     <color name="note_transparent">#00FFFFFF</color>
+    <color name="note_ivory">#fffbf0</color>
+    <color name="note_transparent_red">#80FE6D4B</color>
+    <color name="note_transparent_yellow">#80FFCF47</color>
+    <color name="note_transparent_green">#809FD661</color>
+    <color name="note_transparent_cyan">#803FD0AD</color>
+    <color name="note_transparent_blue">#802BBDF3</color>
+    <color name="note_black">#000000</color>
+    <color name="note_grey">#646464</color>
 </resources>

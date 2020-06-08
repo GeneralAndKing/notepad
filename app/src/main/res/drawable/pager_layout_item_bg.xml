@@ -20,10 +20,10 @@
     <!-- rectangle 表示为矩形 -->
 
     <!-- 填充的颜色 -->
-    <solid android:color="@color/app_color_theme_4"/>
+    <solid android:color="@color/note_transparent_green"/>
 
     <!-- android:radius 圆角的半径 -->
     <corners
-        android:radius="10dp"/>
+        android:radius="8dp"/>
 
 </shape>

@@ -9,6 +9,8 @@ import com.np.notepad.R
 import com.np.notepad.adapter.NoteItemAdapter
 import com.np.notepad.base.BaseFragment
 import com.np.notepad.databinding.FragmentHomeLayoutBinding
+import com.np.notepad.manager.DatabaseManager
+import com.np.notepad.model.NoteItem
 import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
 import com.np.notepad.util.LoggerUtils
 import java.util.*
@@ -33,12 +35,8 @@ class HomeFragment : BaseFragment() {
      * 初始化bar
      */
     private fun initTopBar() {
-//        binding.topbar.addLeftBackImageButton()
-//            .setOnClickListener {
-//                Toast.makeText(context, "点击返回", Toast.LENGTH_SHORT).show()
-//            }
-        binding.topbar.addRightImageButton(R.mipmap.icon_topbar_overflow, R.id.topbar_right_change_button)
-            .setOnClickListener {LoggerUtils.i("点击了右按钮")}
+        binding.topbar.addRightImageButton(R.mipmap.icon_add, R.id.topbar_right_change_button)
+            .setOnClickListener {startContentFragment(0)}
         binding.collapsingTopbarLayout.title = getString(R.string.app_name)
         binding.collapsingTopbarLayout.setScrimUpdateListener { animation ->
             LoggerUtils.i("scrim: " + animation.animatedValue)
@@ -52,31 +50,46 @@ class HomeFragment : BaseFragment() {
      * 初始化内容列表
      */
     private fun initList() {
-        mRecyclerViewAdapter = NoteItemAdapter(R.layout.note_item, ArrayList(), 10, requireContext())
+        mRecyclerViewAdapter = NoteItemAdapter(
+            R.layout.note_item,
+            DatabaseManager.getInstance().getAll(),
+            10,
+            requireContext())
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         //开启动画效果
         mRecyclerViewAdapter.openLoadAnimation()
         //设置动画效果
         mRecyclerViewAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN)
-        //添加分割线
-//        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         //设置Item子控件点击事件
         mRecyclerViewAdapter.setOnItemChildClickListener { _, view, position ->
             val item = mRecyclerViewAdapter.getItem(position)!!
             when(view.id) {
-                R.id.textView -> {
-                    val fragment = ContentFragment()
-                    val args = Bundle()
-                    args.putLong(ITEM_ID, item.id)
-                    fragment.arguments = args
-                    startFragment(fragment)
-                }
+                R.id.textView -> startContentFragment(item.id)
                 R.id.btnRemind -> LoggerUtils.i("click btnRemind")
-                R.id.btnDelete -> LoggerUtils.i("click btnDelete")
+                R.id.btnDelete -> mRecyclerViewAdapter.remove(position)
             }
         }
         //设置适配器
         binding.recyclerView.adapter = mRecyclerViewAdapter
+    }
+
+    /**
+     * 跳转到编辑内容fragment
+     */
+    private fun startContentFragment(id: Long) {
+        val fragment = ContentFragment()
+        val args = Bundle()
+        args.putLong(ITEM_ID, id)
+        fragment.arguments = args
+        startFragment(fragment)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val noteItem = NoteItem()
+        noteItem.title = "新增"
+        noteItem.lastUpdateTime = Date()
+        mRecyclerViewAdapter.addData(0, noteItem)
     }
 
     override fun translucentFull(): Boolean = true

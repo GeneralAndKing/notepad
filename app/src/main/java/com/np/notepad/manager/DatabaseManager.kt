@@ -15,9 +15,9 @@ class DatabaseManager private constructor() {
   }
 
   /**
-   * find all title.
+   * find all.
    */
-  fun getTitles() = LitePal.findAll<NoteItem>().map { it.title }
+  fun getAll(): MutableList<NoteItem> = LitePal.findAll<NoteItem>()
 
   /**
    * find by id
