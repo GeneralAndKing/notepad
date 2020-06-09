@@ -17,6 +17,6 @@ data class NoteItem (
     /**强提醒*/
     var remind: Boolean = false,
     /**笔记类别*/
-    var background: BackgroundTypeEnum = BackgroundTypeEnum.GREEN,
+    var background: String = BackgroundTypeEnum.GREEN.name,
     var lastUpdateTime: Date = Date()
 ): LitePalSupport()

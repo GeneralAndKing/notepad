@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout
 import com.np.notepad.R
 import com.np.notepad.adapter.NoteItemAdapter
 import com.np.notepad.base.BaseFragment
@@ -15,10 +16,10 @@ import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.BackgroundTypeEnum
 import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
 import com.np.notepad.util.LoggerUtils
+import com.np.notepad.util.StringUtils
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog.CheckableDialogBuilder
 import java.util.*
-
 
 class HomeFragment : BaseFragment() {
     //绑定XML布局文件
@@ -26,6 +27,8 @@ class HomeFragment : BaseFragment() {
     //适配器
     private lateinit var mRecyclerViewAdapter: NoteItemAdapter
     private var initDataTop: Int = 0
+    private var topSize: Int =
+        DatabaseManager.getInstance().getToppingSize()
 
     override fun onCreateView(): View {
         binding = FragmentHomeLayoutBinding.inflate(
@@ -33,6 +36,7 @@ class HomeFragment : BaseFragment() {
         )
         initTopBar()
         initList()
+        LoggerUtils.i("topSize=$topSize")
         return binding.root
     }
 
@@ -41,7 +45,16 @@ class HomeFragment : BaseFragment() {
      */
     private fun initTopBar() {
         binding.topbar.addRightImageButton(R.mipmap.icon_add, R.id.topbar_right_change_button)
-            .setOnClickListener {startContentFragment(0)}
+            .setOnClickListener {
+//                startContentFragment(0)
+                val noteItem = NoteItem()
+                noteItem.title = UUID.randomUUID().toString()
+                //获取置顶数量
+                mRecyclerViewAdapter.addData(topSize, noteItem)
+                //保存到数据库
+                DatabaseManager.getInstance().save(noteItem)
+                binding.emptyView.hide()
+            }
         binding.collapsingTopbarLayout.title = getString(R.string.app_name)
         binding.collapsingTopbarLayout.setScrimUpdateListener { animation ->
             LoggerUtils.i("scrim: " + animation.animatedValue)
@@ -59,10 +72,10 @@ class HomeFragment : BaseFragment() {
      * 初始化内容列表
      */
     private fun initList() {
+        val notes = DatabaseManager.getInstance().getAll()
         mRecyclerViewAdapter = NoteItemAdapter(
             R.layout.note_item,
-            DatabaseManager.getInstance().getAll(),
-            10,
+            notes,
             requireContext())
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         //开启动画效果
@@ -74,13 +87,37 @@ class HomeFragment : BaseFragment() {
             val item = mRecyclerViewAdapter.getItem(position)!!
             when(view.id) {
                 R.id.textView -> startContentFragment(item.id)
-                R.id.btnRemind -> LoggerUtils.i("click btnRemind")
-                R.id.btnDelete -> mRecyclerViewAdapter.remove(position)
-                R.id.btnTopping -> setItemTop(item, position, view)
+                // 提醒
+                R.id.btnRemind -> {
+                    if (!item.remind) {
+                        item.remind = true
+                        LoggerUtils.i("设置提醒")
+                        //设置图标
+                        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind_close)
+                    } else {
+                        LoggerUtils.i("取消提醒")
+                        //设置图标
+                        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind)
+                    }
+                    closeSwipeMenu()
+                }
+                // 删除
+                R.id.btnDelete -> removeItem(position, item.id)
+                // 置顶
+                R.id.btnTopping -> {
+                    if (!item.top) {
+                        setItemTop(item, position)
+                        //设置图标
+                        setViewIcon(position, R.id.btnTopping, R.drawable.btn_topping_close)
+                    }
+                    else LoggerUtils.i("取消置顶")
+                    closeSwipeMenu()
+                }
+                // 换肤
                 R.id.btnSkin -> {
                     var i = 0
                     for(background in BackgroundTypeEnum.values()) {
-                        if (item.background == background) {
+                        if (item.background == background.name) {
                             showSingleBackgroundDialog(
                                 item,
                                 position,
@@ -95,6 +132,25 @@ class HomeFragment : BaseFragment() {
         }
         //设置适配器
         binding.recyclerView.adapter = mRecyclerViewAdapter
+        //配置默认view
+        if (notes.size == 0) {
+            binding.emptyView.show(
+                false,
+                "未创建笔记",
+                null,
+                "点击创建笔记",
+                View.OnClickListener {  })
+        } else {
+            binding.emptyView.hide()
+        }
+    }
+
+    /**
+     * 删除item
+     */
+    private fun removeItem(position: Int, id: Long) {
+        mRecyclerViewAdapter.remove(position)
+        DatabaseManager.getInstance().delete(id)
     }
 
     /**
@@ -102,19 +158,18 @@ class HomeFragment : BaseFragment() {
      * @param item 当前选择背景的item
      * @param position item位置
      */
-    private fun setItemTop(item: NoteItem, position: Int, view: View) {
+    private fun setItemTop(item: NoteItem, position: Int) {
+        val viewByPosition = getViewByPosition(position)
+        viewByPosition.text = StringUtils.getTitleHtmlText(
+            requireContext(), item.title, item.lastUpdateTime, true)
+        mRecyclerViewAdapter.notifyItemMoved(position, 0)
+        binding.recyclerView.scrollToPosition(0)
         //保存数据库
         if (!item.top) {
             item.top = true
-//        DatabaseManager.getInstance().update(item)
-            val viewByPosition: TextView = mRecyclerViewAdapter.getViewByPosition(
-                binding.recyclerView,
-                position,
-                R.id.textView
-            ) as TextView
-            viewByPosition.text = viewByPosition.text.toString().plus("  ⇧")
-            mRecyclerViewAdapter.notifyItemMoved(position, 0)
-            binding.recyclerView.scrollToPosition(0)
+            DatabaseManager.getInstance().update(item)
+            //刷新置顶数量
+            topSize = DatabaseManager.getInstance().getToppingSize()
         }
     }
 
@@ -122,16 +177,9 @@ class HomeFragment : BaseFragment() {
      * 初始化置顶
      */
     private fun initTop() {
-        LoggerUtils.i("initTop:"+mRecyclerViewAdapter.noteItemTops.size)
         mRecyclerViewAdapter.noteItemTops.sort()
-        for(position in mRecyclerViewAdapter.noteItemTops) {
-            val viewByPosition: TextView = mRecyclerViewAdapter.getViewByPosition(
-                binding.recyclerView,
-                position,
-                R.id.textView
-            ) as TextView
-            viewByPosition.text = viewByPosition.text.toString().plus("  ⇧")
-            mRecyclerViewAdapter.notifyItemMoved(position, 0)
+        for((i, position) in mRecyclerViewAdapter.noteItemTops.withIndex()) {
+            mRecyclerViewAdapter.setItemTopping(position, i)
         }
         binding.recyclerView.scrollToPosition(0)
     }
@@ -153,14 +201,48 @@ class HomeFragment : BaseFragment() {
             .setSkinManager(QMUISkinManager.defaultInstance(context))
             .addItems(items) { dialog, which ->
                 dialog.cancel()
-                item.background = BackgroundTypeEnum.values()[which]
-                //保存到数据库
-//                DatabaseManager.getInstance().update(item)
-                //刷新item
-                mRecyclerViewAdapter.refreshNotifyItemChanged(position)
+                if (item.background != BackgroundTypeEnum.values()[which].name) {
+                    val textView = getViewByPosition(position)
+                    textView.setBackgroundResource(BackgroundTypeEnum.values()[which].resId)
+                    //保存到数据库
+                    item.background = BackgroundTypeEnum.values()[which].name
+                    DatabaseManager.getInstance().update(item)
+                }
+                closeSwipeMenu()
             }
             .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show()
     }
+
+    /**
+     * 关闭侧滑菜单
+     */
+    private fun closeSwipeMenu() {
+        if (SwipeMenuLayout.getViewCache().isSwipeEnable) {
+            SwipeMenuLayout.getViewCache().smoothClose()
+        }
+    }
+
+    /**
+     * 设置指定位置的按钮图标
+     */
+    private fun setViewIcon(position: Int, viewId: Int, resId: Int) {
+        val viewByPosition = mRecyclerViewAdapter.getViewByPosition(
+            binding.recyclerView,
+            position,
+            viewId
+        )!!
+        viewByPosition.setBackgroundResource(resId)
+    }
+
+    /**
+     * 获取itemView
+     */
+    private fun getViewByPosition(position: Int): TextView =
+        mRecyclerViewAdapter.getViewByPosition(
+            binding.recyclerView,
+            position,
+            R.id.textView
+        ) as TextView
 
     /**
      * 跳转到编辑内容fragment
@@ -173,15 +255,15 @@ class HomeFragment : BaseFragment() {
         startFragment(fragment)
     }
 
-    override fun onResume() {
-        super.onResume()
-        val noteItem = NoteItem()
-        noteItem.title = "新增"
-        noteItem.lastUpdateTime = Date()
-        //后续需要读取数据库获取置顶数量
-        mRecyclerViewAdapter.addData(0, noteItem)
-        //保存到数据库
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        val noteItem = NoteItem()
+//        noteItem.title = "新增"
+//        noteItem.lastUpdateTime = Date()
+//        //后续需要读取数据库获取置顶数量
+//        mRecyclerViewAdapter.addData(0, noteItem)
+//        //保存到数据库
+//    }
 
     override fun translucentFull(): Boolean = true
 

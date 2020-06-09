@@ -1,17 +1,14 @@
 package com.np.notepad.adapter
 
 import android.content.Context
-import android.os.Build
-import android.text.Html
-import android.text.Spanned
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.np.notepad.R
 import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.BackgroundTypeEnum
-import com.np.notepad.util.ColorUtils
-import com.np.notepad.util.DateUtils
 import com.np.notepad.util.LoggerUtils
+import com.np.notepad.util.StringUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,53 +19,34 @@ import kotlin.collections.ArrayList
 class NoteItemAdapter(
     layoutId:Int,
     data:MutableList<NoteItem>? = null,
-    itemCount:Int,
     context: Context
 ): BaseQuickAdapter<NoteItem, BaseViewHolder>(layoutId, data) {
 
     init {
         mContext = context
-        if (data!!.size == 0 && itemCount != 0) {
-            for (i in 1..itemCount) {
-                val noteItem = NoteItem()
-                noteItem.title = "标题$i"
-                noteItem.lastUpdateTime = Date()
-                noteItem.background = BackgroundTypeEnum.GREEN
-                if (i == 2 || i == 3 ||i == 5) {
-                    noteItem.top = true
-                }
-                data.add(noteItem)
-            }
-        }
     }
     val noteItemTops: MutableList<Int> = ArrayList()
 
+    fun setItemTopping(fromPosition: Int, toPosition: Int) {
+        val fromItem = getItem(fromPosition)!!
+        val toItem = getItem(toPosition)!!
+        setData(toPosition, fromItem)
+        setData(fromPosition, toItem)
+    }
+
     override fun convert(helper: BaseViewHolder, item: NoteItem?) {
-        // data color
-        val colorString: String?
-        // text
-        val text: Spanned? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            colorString = ColorUtils.colorToString(
-                mContext.resources.getColor(R.color.note_grey, null))
-            Html.fromHtml(
-                "<font color=\"#000000\">" + item?.title +
-                  "</font><font color=\"" + colorString + "\"><small>" + DateUtils.
-                  getDateTimeByFormat(item?.lastUpdateTime, DateUtils.DATE_TIME_FORMAT_1) +
-                  "</small></font>"
-                ,Html.FROM_HTML_MODE_COMPACT)
-        } else {
-            colorString = ColorUtils.colorToString(
-                mContext.resources.getColor(R.color.note_grey))
-            Html.fromHtml("<font color=\"#000000\">" + item?.title +
-              "<br/></font><font color=\"" + colorString + "\"><small>" + DateUtils.
-            getDateTimeByFormat(item?.lastUpdateTime, DateUtils.DATE_TIME_FORMAT_1) +
-              "</small></font>")
-        }
-        item?.background?.resId?.let {
+        val backgroundEnum = BackgroundTypeEnum.getEnumByName(item!!.background)
+        backgroundEnum.resId.let {
+            LoggerUtils.i("item=${item}")
+            var text =
+                StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, false)
             if (item.top) {
-                //设置置顶和颜色
+                //设置置顶
                 noteItemTops.add(helper.adapterPosition)
-                LoggerUtils.i("noteItemTopsSize=${noteItemTops.size}")
+                text =
+                    StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, true)
+                //改变按钮
+                helper.setBackgroundRes(R.id.btnTopping, R.drawable.btn_topping_close)
             }
             helper.setText(R.id.textView, text)
                 .setBackgroundRes(R.id.textView, it)
@@ -78,8 +56,6 @@ class NoteItemAdapter(
                     R.id.btnRemind,
                     R.id.btnSkin,
                     R.id.btnTopping)
-        } to {
-            LoggerUtils.e("item?.background?.resId? null error")
         }
     }
 }

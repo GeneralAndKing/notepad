@@ -10,7 +10,8 @@
     android:gravity="center_vertical"
     app:ios="false"
     app:leftSwipe="true"
-    app:swipeEnable="true">
+    app:swipeEnable="true"
+    android:id="@+id/swipeMenu">
 
     <TextView
         android:id="@+id/textView"
@@ -35,7 +36,7 @@
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
             android:layout_marginStart="@dimen/dp_18"
-            android:background="@drawable/icon_topping"
+            android:background="@drawable/btn_topping"
             tools:ignore="ButtonStyle" />
 
         <Button
@@ -43,7 +44,7 @@
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
             android:layout_marginStart="@dimen/dp_10"
-            android:background="@drawable/icon_skin"
+            android:background="@drawable/btn_skin"
             tools:ignore="ButtonStyle" />
 
         <Button
@@ -51,7 +52,7 @@
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
             android:layout_marginStart="@dimen/dp_10"
-            android:background="@drawable/icon_remind"
+            android:background="@drawable/btn_remind"
             tools:ignore="ButtonStyle" />
 
         <Button
@@ -59,7 +60,7 @@
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
             android:layout_marginStart="@dimen/dp_10"
-            android:background="@drawable/icon_delete"
+            android:background="@drawable/btn_delete"
             tools:ignore="ButtonStyle" />
     </LinearLayout>
 

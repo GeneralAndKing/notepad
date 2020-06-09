@@ -48,6 +48,14 @@
         </com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout>
     </com.qmuiteam.qmui.widget.QMUIAppBarLayout>
 
+    <com.qmuiteam.qmui.widget.QMUIEmptyView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:visibility="invisible"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

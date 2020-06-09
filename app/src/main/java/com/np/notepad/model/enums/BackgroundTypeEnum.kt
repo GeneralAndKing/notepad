@@ -2,7 +2,6 @@ package com.np.notepad.model.enums
 
 import com.np.notepad.R
 
-
 /**
  * 笔记背景类型
  * @author z f
@@ -24,6 +23,18 @@ enum class BackgroundTypeEnum(val resId: Int, val des: String) {
                 desArray[i] = noteType.des
             }
             return desArray
+        }
+
+        /**
+         * 根据name获取枚举
+         */
+        fun getEnumByName(codeVal: String?): BackgroundTypeEnum {
+            for (e in values()) {
+                if (e.name.equals(codeVal, ignoreCase = true)) {
+                    return e
+                }
+            }
+            return GREEN
         }
     }
 }

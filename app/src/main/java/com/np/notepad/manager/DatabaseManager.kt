@@ -1,6 +1,7 @@
 package com.np.notepad.manager
 
 import com.np.notepad.model.NoteItem
+import com.np.notepad.util.LoggerUtils
 import org.litepal.LitePal
 import org.litepal.extension.*
 
@@ -13,6 +14,11 @@ class DatabaseManager private constructor() {
   object SingleHolder {
     val INSTANCE: DatabaseManager = DatabaseManager()
   }
+
+  /**
+   * get Topping size
+   */
+  fun getToppingSize(): Int = LitePal.findAll<NoteItem>().filter { it.top }.size
 
   /**
    * find all.
