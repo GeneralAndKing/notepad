@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import com.np.notepad.R
 import com.np.notepad.base.BaseFragment
 import com.np.notepad.databinding.FragmentContentLayoutBinding
-import com.np.notepad.databinding.TopbarRightViewLayoutBinding
 import com.np.notepad.util.LoggerUtils
 import com.yuruiyin.richeditor.enumtype.RichTypeEnum
 import com.yuruiyin.richeditor.model.StyleBtnVm
@@ -32,11 +31,7 @@ class ContentFragment : BaseFragment() {
         binding.topbar.addLeftBackImageButton()
             .setOnClickListener { popBackStack() }
         binding.topbar.setTitle("编辑事件")
-        val inflate = TopbarRightViewLayoutBinding.inflate(layoutInflater)
-        binding.topbar.addRightView(
-            inflate.root,
-            R.id.topbar_right_view)
-        binding.topbar.addRightImageButton(R.mipmap.icon_confirm, R.id.topbar_right_change_button)
+        binding.topbar.addRightImageButton(R.drawable.icon_confirm, R.id.topbar_right_change_button)
             .setOnClickListener { LoggerUtils.i("点击了保存按钮") }
     }
 

@@ -7,221 +7,216 @@
     android:background="?attr/app_content_bg_color"
     app:qmui_skin_background="?attr/app_skin_common_background">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/option"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
 
-        <RelativeLayout
-            android:id="@+id/option"
+        <ImageView
+            android:id="@+id/ivBold"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:contentDescription="@string/ivBold"
+            android:padding="7dp"
+            android:src="@mipmap/icon_bold_normal" />
+
+        <ImageView
+            android:id="@+id/ivItalic"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:layout_marginStart="45dp"
+            android:contentDescription="@string/ivItalic"
+            android:padding="7dp"
+            android:src="@mipmap/icon_italic_normal" />
+
+        <ImageView
+            android:id="@+id/ivStrikeThrough"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:layout_marginStart="90dp"
+            android:contentDescription="@string/ivStrikeThrough"
+            android:padding="7dp"
+            android:src="@mipmap/icon_strikethrough_normal" />
+
+        <ImageView
+            android:id="@+id/ivUnderline"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:layout_marginStart="135dp"
+            android:contentDescription="@string/ivUnderline"
+            android:padding="7dp"
+            android:src="@mipmap/icon_underline_normal" />
+
+        <ImageView
+            android:id="@+id/ivHeadline"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:layout_marginStart="180dp"
+            android:contentDescription="@string/ivHeadline"
+            android:padding="7dp"
+            android:src="@mipmap/icon_headline_normal" />
+
+        <ImageView
+            android:id="@+id/ivBlockquote"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:layout_marginStart="225dp"
+            android:padding="7dp"
+            android:src="@mipmap/icon_blockquote_normal" />
+
+        <ImageView
+            android:id="@+id/ivAddImage"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:layout_marginStart="270dp"
+            android:padding="7dp"
+            android:src="@mipmap/icon_picture" />
+
+        <!--分割线-->
+        <ImageView
+            android:id="@+id/ivAddDivider"
+            android:layout_width="@dimen/style_button_size"
+            android:layout_height="@dimen/style_button_size"
+            android:layout_marginStart="315dp"
+            android:padding="7dp"
+            android:src="@mipmap/icon_divider_normal" />
+
+        <!--        <Button-->
+        <!--            android:id="@+id/btnSaveDraft"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="@dimen/style_button_size"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="5dp"-->
+        <!--            android:text="保存草稿"-->
+        <!--            android:textColor="#ff000000"-->
+        <!--            android:textSize="15dp"-->
+        <!--            android:layout_marginTop="@dimen/dp_60"-->
+        <!--            android:layout_marginLeft="80dp"/>-->
+
+        <!--        <Button-->
+        <!--            android:id="@+id/btnRestoreDraft"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="@dimen/style_button_size"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="5dp"-->
+        <!--            android:text="恢复草稿"-->
+        <!--            android:textColor="#ff000000"-->
+        <!--            android:textSize="15dp"-->
+        <!--            android:layout_marginTop="@dimen/dp_60"-->
+        <!--            android:layout_marginLeft="173dp"/>-->
+
+        <!--        <Button-->
+        <!--            android:id="@+id/btnClearDraft"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="@dimen/style_button_size"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="5dp"-->
+        <!--            android:text="清空草稿"-->
+        <!--            android:textColor="#ff000000"-->
+        <!--            android:textSize="15dp"-->
+        <!--            android:layout_marginTop="@dimen/dp_60"-->
+        <!--            android:layout_marginLeft="265dp"/>-->
+
+        <!--        <Button-->
+        <!--            android:id="@+id/btnCreateJson"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="@dimen/style_button_size"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="5dp"-->
+        <!--            android:text="生成json"-->
+        <!--            android:textColor="#ff000000"-->
+        <!--            android:textSize="15dp" />-->
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/ivUndo"-->
+        <!--            android:layout_width="@dimen/style_button_size"-->
+        <!--            android:layout_height="@dimen/style_button_size"-->
+        <!--            android:padding="7dp"-->
+        <!--            android:src="@mipmap/icon_undo" />-->
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/ivRedo"-->
+        <!--            android:layout_width="@dimen/style_button_size"-->
+        <!--            android:layout_height="@dimen/style_button_size"-->
+        <!--            android:padding="7dp"-->
+        <!--            android:src="@mipmap/icon_redo" />-->
+
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="80dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp">
 
-            <ImageView
-                android:id="@+id/ivBold"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:contentDescription="@string/ivBold"
-                android:padding="7dp"
-                android:src="@mipmap/icon_bold_normal" />
-
-            <ImageView
-                android:id="@+id/ivItalic"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:layout_marginStart="45dp"
-                android:contentDescription="@string/ivItalic"
-                android:padding="7dp"
-                android:src="@mipmap/icon_italic_normal" />
-
-            <ImageView
-                android:id="@+id/ivStrikeThrough"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:layout_marginStart="90dp"
-                android:contentDescription="@string/ivStrikeThrough"
-                android:padding="7dp"
-                android:src="@mipmap/icon_strikethrough_normal" />
-
-            <ImageView
-                android:id="@+id/ivUnderline"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:layout_marginStart="135dp"
-                android:contentDescription="@string/ivUnderline"
-                android:padding="7dp"
-                android:src="@mipmap/icon_underline_normal" />
-
-            <ImageView
-                android:id="@+id/ivHeadline"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:layout_marginStart="180dp"
-                android:contentDescription="@string/ivHeadline"
-                android:padding="7dp"
-                android:src="@mipmap/icon_headline_normal" />
-
-            <ImageView
-                android:id="@+id/ivBlockquote"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:layout_marginStart="225dp"
-                android:padding="7dp"
-                android:src="@mipmap/icon_blockquote_normal" />
-
-            <ImageView
-                android:id="@+id/ivAddImage"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:layout_marginStart="270dp"
-                android:padding="7dp"
-                android:src="@mipmap/icon_picture" />
-
-            <!--分割线-->
-            <ImageView
-                android:id="@+id/ivAddDivider"
-                android:layout_width="@dimen/style_button_size"
-                android:layout_height="@dimen/style_button_size"
-                android:layout_marginStart="315dp"
-                android:padding="7dp"
-                android:src="@mipmap/icon_divider_normal" />
-
-            <!--        <Button-->
-            <!--            android:id="@+id/btnSaveDraft"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="@dimen/style_button_size"-->
-            <!--            android:gravity="center"-->
-            <!--            android:padding="5dp"-->
-            <!--            android:text="保存草稿"-->
-            <!--            android:textColor="#ff000000"-->
-            <!--            android:textSize="15dp"-->
-            <!--            android:layout_marginTop="@dimen/dp_60"-->
-            <!--            android:layout_marginLeft="80dp"/>-->
-
-            <!--        <Button-->
-            <!--            android:id="@+id/btnRestoreDraft"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="@dimen/style_button_size"-->
-            <!--            android:gravity="center"-->
-            <!--            android:padding="5dp"-->
-            <!--            android:text="恢复草稿"-->
-            <!--            android:textColor="#ff000000"-->
-            <!--            android:textSize="15dp"-->
-            <!--            android:layout_marginTop="@dimen/dp_60"-->
-            <!--            android:layout_marginLeft="173dp"/>-->
-
-            <!--        <Button-->
-            <!--            android:id="@+id/btnClearDraft"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="@dimen/style_button_size"-->
-            <!--            android:gravity="center"-->
-            <!--            android:padding="5dp"-->
-            <!--            android:text="清空草稿"-->
-            <!--            android:textColor="#ff000000"-->
-            <!--            android:textSize="15dp"-->
-            <!--            android:layout_marginTop="@dimen/dp_60"-->
-            <!--            android:layout_marginLeft="265dp"/>-->
-
-            <!--        <Button-->
-            <!--            android:id="@+id/btnCreateJson"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="@dimen/style_button_size"-->
-            <!--            android:gravity="center"-->
-            <!--            android:padding="5dp"-->
-            <!--            android:text="生成json"-->
-            <!--            android:textColor="#ff000000"-->
-            <!--            android:textSize="15dp" />-->
-
-            <!--        <ImageView-->
-            <!--            android:id="@+id/ivUndo"-->
-            <!--            android:layout_width="@dimen/style_button_size"-->
-            <!--            android:layout_height="@dimen/style_button_size"-->
-            <!--            android:padding="7dp"-->
-            <!--            android:src="@mipmap/icon_undo" />-->
-
-            <!--        <ImageView-->
-            <!--            android:id="@+id/ivRedo"-->
-            <!--            android:layout_width="@dimen/style_button_size"-->
-            <!--            android:layout_height="@dimen/style_button_size"-->
-            <!--            android:padding="7dp"-->
-            <!--            android:src="@mipmap/icon_redo" />-->
-
-
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/etTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:background="@drawable/shape_corner"
+                    android:hint="标题（可选）"
+                    android:inputType="textMultiLine"
+                    android:maxLength="40"
+                    android:maxLines="2"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="16dp"
+                    android:textColor="#5C5858"
+                    android:textColorHint="#5C5858"
+                    android:textSize="19dp"
+                    android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/etTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_corner"
-                        android:hint="标题（可选）"
-                        android:inputType="textMultiLine"
-                        android:maxLength="40"
-                        android:maxLines="2"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingBottom="16dp"
-                        android:textColor="#5C5858"
-                        android:textColorHint="#5C5858"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
+                <com.yuruiyin.richeditor.RichEditText
+                    android:id="@+id/richEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_corner"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="top|left"
+                    android:hint="请输入内容..."
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="5dp"
+                    android:maxLength="20000"
+                    android:minHeight="350dp"
+                    android:paddingStart="@dimen/editor_padding_left"
+                    android:paddingTop="23dp"
+                    android:paddingEnd="@dimen/editor_padding_right"
+                    android:paddingBottom="70dp"
+                    android:textColor="#5C5858"
+                    android:textColorHint="#5C5858"
+                    android:textSize="16sp"
+                    app:editor_headline_text_size="20dp"
+                    app:editor_image_radius="5dp"
+                    app:editor_show_gif_mark="true"
+                    app:editor_show_long_image_mark="true"
+                    app:editor_show_video_mark="true"
+                    app:editor_video_mark_resource_id="@mipmap/editor_video_mark_icon" />
+            </LinearLayout>
+        </ScrollView>
 
-                    <com.yuruiyin.richeditor.RichEditText
-                        android:id="@+id/richEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/shape_corner"
-                        android:cursorVisible="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:gravity="top|left"
-                        android:hint="请输入内容..."
-                        android:inputType="textMultiLine"
-                        android:lineSpacingExtra="5dp"
-                        android:maxLength="20000"
-                        android:minHeight="350dp"
-                        android:paddingStart="@dimen/editor_padding_left"
-                        android:paddingTop="23dp"
-                        android:paddingEnd="@dimen/editor_padding_right"
-                        android:paddingBottom="70dp"
-                        android:textColor="#5C5858"
-                        android:textColorHint="#5C5858"
-                        android:textSize="16sp"
-                        app:editor_headline_text_size="20dp"
-                        app:editor_image_radius="5dp"
-                        app:editor_show_gif_mark="true"
-                        app:editor_show_long_image_mark="true"
-                        app:editor_show_video_mark="true"
-                        app:editor_video_mark_resource_id="@mipmap/editor_video_mark_icon" />
-                </LinearLayout>
-            </ScrollView>
-
-            <Button
-                android:id="@+id/btnClearContent"
-                android:layout_width="70dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="495dp"
-                android:background="@drawable/btn_radius"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="清空"
-                android:textColor="#ff000000"
-                android:textSize="16sp" />
-        </RelativeLayout>
-    </LinearLayout>
+        <Button
+            android:id="@+id/btnClearContent"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="495dp"
+            android:background="@drawable/btn_radius"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="清空"
+            android:textColor="#ff000000"
+            android:textSize="16sp" />
+    </RelativeLayout>
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
         android:id="@+id/topbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/qmui_topbar_height"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true" />
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>
