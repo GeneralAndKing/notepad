@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout
@@ -27,6 +28,7 @@ class HomeFragment : BaseFragment() {
     //适配器
     private lateinit var mRecyclerViewAdapter: NoteItemAdapter
     private var initDataTop: Int = 0
+    //置顶数量
     private var topSize: Int =
         DatabaseManager.getInstance().getToppingSize()
 
@@ -107,10 +109,10 @@ class HomeFragment : BaseFragment() {
                 R.id.btnTopping -> {
                     if (!item.top) {
                         setItemTop(item, position)
-                        //设置图标
-                        setViewIcon(position, R.id.btnTopping, R.drawable.btn_topping_close)
                     }
-                    else LoggerUtils.i("取消置顶")
+                    else {
+                        closeItemTop(item, position)
+                    }
                     closeSwipeMenu()
                 }
                 // 换肤
@@ -138,8 +140,8 @@ class HomeFragment : BaseFragment() {
                 false,
                 "未创建笔记",
                 null,
-                "点击创建笔记",
-                View.OnClickListener {  })
+                "点击创建笔记"
+            ) { Toast.makeText(context, "尚未实现", Toast.LENGTH_SHORT).show()}
         } else {
             binding.emptyView.hide()
         }
@@ -154,7 +156,7 @@ class HomeFragment : BaseFragment() {
     }
 
     /**
-     * 选择item置顶
+     * 设置指定位置item置顶
      * @param item 当前选择背景的item
      * @param position item位置
      */
@@ -162,12 +164,33 @@ class HomeFragment : BaseFragment() {
         val viewByPosition = getViewByPosition(position)
         viewByPosition.text = StringUtils.getTitleHtmlText(
             requireContext(), item.title, item.lastUpdateTime, true)
-        mRecyclerViewAdapter.notifyItemMoved(position, 0)
-        binding.recyclerView.scrollToPosition(0)
-        //保存数据库
         if (!item.top) {
             item.top = true
+            mRecyclerViewAdapter.notifyItemMoved(position, 0)
+            binding.recyclerView.scrollToPosition(0)
+            //保存数据库
             DatabaseManager.getInstance().update(item)
+            //刷新置顶数量
+            topSize = DatabaseManager.getInstance().getToppingSize()
+            //设置图标
+            setViewIcon(position, R.id.btnTopping, R.drawable.btn_topping_close)
+        }
+    }
+
+    /**
+     * 取消指定position置顶
+     */
+    private fun closeItemTop(item: NoteItem, position: Int) {
+        val viewByPosition = getViewByPosition(position)
+        viewByPosition.text = StringUtils.getTitleHtmlText(
+            requireContext(), item.title, item.lastUpdateTime, false)
+        if (item.top) {
+            item.setToDefault("top")
+            //保存数据库
+            DatabaseManager.getInstance().update(item)
+            //设置图标
+            setViewIcon(position, R.id.btnTopping, R.drawable.btn_topping)
+            mRecyclerViewAdapter.notifyItemMoved(position, topSize - 1)
             //刷新置顶数量
             topSize = DatabaseManager.getInstance().getToppingSize()
         }
@@ -179,7 +202,7 @@ class HomeFragment : BaseFragment() {
     private fun initTop() {
         mRecyclerViewAdapter.noteItemTops.sort()
         for((i, position) in mRecyclerViewAdapter.noteItemTops.withIndex()) {
-            mRecyclerViewAdapter.setItemTopping(position, i)
+            mRecyclerViewAdapter.setItemPosition(position, i)
         }
         binding.recyclerView.scrollToPosition(0)
     }

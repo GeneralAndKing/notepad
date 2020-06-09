@@ -1,7 +1,6 @@
 package com.np.notepad.adapter
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.np.notepad.R
@@ -9,7 +8,6 @@ import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.BackgroundTypeEnum
 import com.np.notepad.util.LoggerUtils
 import com.np.notepad.util.StringUtils
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -27,7 +25,7 @@ class NoteItemAdapter(
     }
     val noteItemTops: MutableList<Int> = ArrayList()
 
-    fun setItemTopping(fromPosition: Int, toPosition: Int) {
+    fun setItemPosition(fromPosition: Int, toPosition: Int) {
         val fromItem = getItem(fromPosition)!!
         val toItem = getItem(toPosition)!!
         setData(toPosition, fromItem)

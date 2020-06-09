@@ -1,7 +1,6 @@
 package com.np.notepad.manager
 
 import com.np.notepad.model.NoteItem
-import com.np.notepad.util.LoggerUtils
 import org.litepal.LitePal
 import org.litepal.extension.*
 
@@ -51,9 +50,4 @@ class DatabaseManager private constructor() {
    * update this id
    */
   fun update(model: NoteItem) = model.update(model.id)
-
-  /**
-   * update by other id
-   */
-  fun update(model: NoteItem, id: Long) = model.update(id)
 }
