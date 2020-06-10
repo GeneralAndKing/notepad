@@ -1,5 +1,6 @@
 package com.np.notepad.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.np.notepad.databinding.FragmentHomeLayoutBinding
 import com.np.notepad.manager.DatabaseManager
 import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.BackgroundTypeEnum
+import com.np.notepad.service.NotificationService
 import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
 import com.np.notepad.util.LoggerUtils
 import com.np.notepad.util.StringUtils
@@ -91,15 +93,12 @@ class HomeFragment : BaseFragment() {
                 R.id.textView -> startContentFragment(item.id)
                 // 提醒
                 R.id.btnRemind -> {
+                    val it = Intent(requireActivity(), NotificationService::class.java)
+                    it.putExtra(ITEM_ID, item.id)
                     if (!item.remind) {
-                        item.remind = true
-                        LoggerUtils.i("设置提醒")
-                        //设置图标
-                        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind_close)
+                        startRemindService(it, position, item)
                     } else {
-                        LoggerUtils.i("取消提醒")
-                        //设置图标
-                        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind)
+                        stopRemindService(it, position, item)
                     }
                     closeSwipeMenu()
                 }
@@ -108,7 +107,7 @@ class HomeFragment : BaseFragment() {
                 // 置顶
                 R.id.btnTopping -> {
                     if (!item.top) {
-                        setItemTop(item, position)
+                        openItemTop(item, position)
                     }
                     else {
                         closeItemTop(item, position)
@@ -148,6 +147,28 @@ class HomeFragment : BaseFragment() {
     }
 
     /**
+     * 启动提醒服务
+     */
+    private fun startRemindService(intent: Intent, position: Int, item: NoteItem) {
+        item.remind = true
+        DatabaseManager.getInstance().update(item)
+        //设置图标
+        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind_close)
+        requireActivity().startService(intent)
+    }
+
+    /**
+     * 停止提醒服务
+     */
+    private fun stopRemindService(intent: Intent, position: Int, item: NoteItem) {
+        item.setToDefault("remind")
+        DatabaseManager.getInstance().update(item)
+        //设置图标
+        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind)
+        requireActivity().stopService(intent)
+    }
+
+    /**
      * 删除item
      */
     private fun removeItem(position: Int, id: Long) {
@@ -160,7 +181,7 @@ class HomeFragment : BaseFragment() {
      * @param item 当前选择背景的item
      * @param position item位置
      */
-    private fun setItemTop(item: NoteItem, position: Int) {
+    private fun openItemTop(item: NoteItem, position: Int) {
         val viewByPosition = getViewByPosition(position)
         viewByPosition.text = StringUtils.getTitleHtmlText(
             requireContext(), item.title, item.lastUpdateTime, true)
@@ -280,12 +301,12 @@ class HomeFragment : BaseFragment() {
 
 //    override fun onResume() {
 //        super.onResume()
-//        val noteItem = NoteItem()
-//        noteItem.title = "新增"
-//        noteItem.lastUpdateTime = Date()
-//        //后续需要读取数据库获取置顶数量
-//        mRecyclerViewAdapter.addData(0, noteItem)
-//        //保存到数据库
+////        val noteItem = NoteItem()
+////        noteItem.title = "新增"
+////        noteItem.lastUpdateTime = Date()
+////        //后续需要读取数据库获取置顶数量
+////        mRecyclerViewAdapter.addData(0, noteItem)
+////        //保存到数据库
 //    }
 
     override fun translucentFull(): Boolean = true

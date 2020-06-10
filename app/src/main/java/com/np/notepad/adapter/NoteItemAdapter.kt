@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.np.notepad.R
 import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.BackgroundTypeEnum
-import com.np.notepad.util.LoggerUtils
 import com.np.notepad.util.StringUtils
 import kotlin.collections.ArrayList
 
@@ -35,7 +34,6 @@ class NoteItemAdapter(
     override fun convert(helper: BaseViewHolder, item: NoteItem?) {
         val backgroundEnum = BackgroundTypeEnum.getEnumByName(item!!.background)
         backgroundEnum.resId.let {
-            LoggerUtils.i("item=${item}")
             var text =
                 StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, false)
             if (item.top) {
@@ -45,6 +43,10 @@ class NoteItemAdapter(
                     StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, true)
                 //改变按钮
                 helper.setBackgroundRes(R.id.btnTopping, R.drawable.btn_topping_close)
+            }
+            if (item.remind) {
+                //改变按钮
+                helper.setBackgroundRes(R.id.btnRemind, R.drawable.btn_remind_close)
             }
             helper.setText(R.id.textView, text)
                 .setBackgroundRes(R.id.textView, it)

@@ -13,7 +13,7 @@ import org.litepal.LitePal
 class NoteApplication : Application() {
 
     companion object {
-        var context: Context? = null
+        lateinit var context: Context
         var openSkinMake = false
     }
 

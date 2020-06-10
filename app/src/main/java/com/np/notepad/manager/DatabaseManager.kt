@@ -10,7 +10,7 @@ class DatabaseManager private constructor() {
     fun getInstance() = SingleHolder.INSTANCE
   }
 
-  object SingleHolder {
+  private object SingleHolder {
     val INSTANCE: DatabaseManager = DatabaseManager()
   }
 
