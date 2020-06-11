@@ -29,7 +29,7 @@ class StringUtils private constructor() {
         Html.fromHtml(
           "<font color=\"#000000\">"
             .plus(title)
-            .plus("</font><font color=\"$colorString\"><small>")
+            .plus("<br/></font><font color=\"$colorString\"><small>")
             .plus(dateString)
             .plus("</small></font>")
           , Html.FROM_HTML_MODE_COMPACT)

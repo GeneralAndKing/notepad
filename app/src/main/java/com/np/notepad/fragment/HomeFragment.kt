@@ -51,13 +51,6 @@ class HomeFragment : BaseFragment() {
         binding.topbar.addRightImageButton(R.mipmap.icon_add, R.id.topbar_right_change_button)
             .setOnClickListener {
                 startContentFragment(0)
-                val noteItem = NoteItem()
-                noteItem.title = UUID.randomUUID().toString()
-                //获取置顶数量
-                mRecyclerViewAdapter.addData(topSize, noteItem)
-                //保存到数据库
-                DatabaseManager.getInstance().save(noteItem)
-                binding.emptyView.hide()
             }
         binding.collapsingTopbarLayout.title = getString(R.string.app_name)
         binding.collapsingTopbarLayout.setScrimUpdateListener { animation ->
@@ -305,6 +298,7 @@ class HomeFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if ((requireActivity() as MainActivity).isChange) {
+            binding.emptyView.hide()
             mRecyclerViewAdapter.replaceData(DatabaseManager.getInstance().getAll())
             initTop()
             (requireActivity() as MainActivity).isChange = false
