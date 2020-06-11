@@ -93,6 +93,7 @@ class HomeFragment : BaseFragment() {
                 R.id.textView -> startContentFragment(item.id)
                 // 提醒
                 R.id.btnRemind -> {
+                    //通知Intent init
                     val it = Intent(requireActivity(), NotificationService::class.java)
                     it.putExtra(ITEM_ID, item.id)
                     if (!item.remind) {
@@ -151,9 +152,9 @@ class HomeFragment : BaseFragment() {
      */
     private fun startRemindService(intent: Intent, position: Int, item: NoteItem) {
         item.remind = true
-        DatabaseManager.getInstance().update(item)
         //设置图标
         setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind_close)
+        DatabaseManager.getInstance().update(item)
         requireActivity().startService(intent)
     }
 
@@ -162,10 +163,10 @@ class HomeFragment : BaseFragment() {
      */
     private fun stopRemindService(intent: Intent, position: Int, item: NoteItem) {
         item.setToDefault("remind")
-        DatabaseManager.getInstance().update(item)
         //设置图标
         setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind)
-        requireActivity().stopService(intent)
+        DatabaseManager.getInstance().update(item)
+        requireActivity().startService(intent)
     }
 
     /**

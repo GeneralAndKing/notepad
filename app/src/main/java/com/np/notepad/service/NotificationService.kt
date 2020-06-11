@@ -11,7 +11,10 @@ import com.np.notepad.util.LoggerUtils
 
 class NotificationService: Service() {
 
+  //当前item
   private lateinit var model: NoteItem
+  //ids
+  private val notificationIds = mutableListOf<Long>()
 
   override fun onBind(intent: Intent?): IBinder? {
     return null
@@ -27,19 +30,28 @@ class NotificationService: Service() {
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     LoggerUtils.i("NotificationService onStartCommand")
     val longExtra = intent!!.getLongExtra(ConstUtils.ITEM_ID, 0)
-    val find = DatabaseManager.getInstance().find(longExtra)
-    if (find != null) {
-      model = find
-      NotificationManager.getInstance().showNotification(model)
+    if (notificationIds.contains(longExtra)) {
+      NotificationManager.getInstance().cancelNotification(longExtra)
+      if (notificationIds.size - 1 == 0) {
+        stopSelf(startId)
+      } else {
+        notificationIds.remove(longExtra)
+      }
     } else {
-      LoggerUtils.e("NotificationService:查无id")
+      val find = DatabaseManager.getInstance().find(longExtra)
+      if (find != null) {
+        model = find
+        NotificationManager.getInstance().showNotification(model)
+        notificationIds.add(model.id)
+      } else {
+        LoggerUtils.e("NotificationService:查无id")
+      }
     }
     return super.onStartCommand(intent, flags, startId)
   }
 
   //Service被关闭之前回调
   override fun onDestroy() {
-    NotificationManager.getInstance().cancelNotification(model.id)
     LoggerUtils.i("NotificationService停止")
     super.onDestroy()
   }
