@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout
 import com.np.notepad.R
+import com.np.notepad.activity.MainActivity
 import com.np.notepad.adapter.NoteItemAdapter
 import com.np.notepad.base.BaseFragment
 import com.np.notepad.databinding.FragmentHomeLayoutBinding
@@ -50,7 +50,7 @@ class HomeFragment : BaseFragment() {
     private fun initTopBar() {
         binding.topbar.addRightImageButton(R.mipmap.icon_add, R.id.topbar_right_change_button)
             .setOnClickListener {
-//                startContentFragment(0)
+                startContentFragment(0)
                 val noteItem = NoteItem()
                 noteItem.title = UUID.randomUUID().toString()
                 //获取置顶数量
@@ -141,7 +141,7 @@ class HomeFragment : BaseFragment() {
                 "未创建笔记",
                 null,
                 "点击创建笔记"
-            ) { Toast.makeText(context, "尚未实现", Toast.LENGTH_SHORT).show()}
+            ) { startContentFragment(0) }
         } else {
             binding.emptyView.hide()
         }
@@ -294,28 +294,24 @@ class HomeFragment : BaseFragment() {
      */
     private fun startContentFragment(id: Long) {
         val fragment = ContentFragment()
-        val args = Bundle()
-        args.putLong(ITEM_ID, id)
-        fragment.arguments = args
+        if (id != 0L) {
+            val args = Bundle()
+            args.putLong(ITEM_ID, id)
+            fragment.arguments = args
+        }
         startFragment(fragment)
     }
 
-//    override fun onResume() {
-//        super.onResume()
-////        val noteItem = NoteItem()
-////        noteItem.title = "新增"
-////        noteItem.lastUpdateTime = Date()
-////        //后续需要读取数据库获取置顶数量
-////        mRecyclerViewAdapter.addData(0, noteItem)
-////        //保存到数据库
-//    }
+    override fun onResume() {
+        super.onResume()
+        if ((requireActivity() as MainActivity).isChange) {
+            mRecyclerViewAdapter.replaceData(DatabaseManager.getInstance().getAll())
+            initTop()
+            (requireActivity() as MainActivity).isChange = false
+        }
+    }
 
     override fun translucentFull(): Boolean = true
 
     override fun canDragBack(): Boolean = false
-
-    /**
-     * 上一页
-     */
-    override fun onLastFragmentFinish(): Any = null!!
 }

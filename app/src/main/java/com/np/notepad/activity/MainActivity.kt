@@ -38,6 +38,9 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups
 )
 @LatestVisitRecord
 class MainActivity : BaseFragmentActivity() {
+
+    var isChange: Boolean = false
+
     companion object {
         private var mGlobalAction: QMUIPopup? = null
     }

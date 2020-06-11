@@ -16,6 +16,7 @@ import com.np.notepad.R
 import com.np.notepad.activity.MainActivity
 import com.np.notepad.model.NoteItem
 import com.np.notepad.util.ConstUtils
+import com.np.notepad.util.LoggerUtils
 
 class NotificationManager private constructor() {
   private var mContext: Context = NoteApplication.context
@@ -30,6 +31,7 @@ class NotificationManager private constructor() {
   }
 
   fun showNotification(model: NoteItem) {
+    LoggerUtils.i(model.toString())
     //设置Intent 返回应用
     val it = Intent(Intent.ACTION_MAIN)
     it.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -51,7 +53,7 @@ class NotificationManager private constructor() {
     }
     val build = builder.setContentTitle(model.title)
       //当通知内容太长一行显示不了，可以使用setStyle
-      .setStyle(NotificationCompat.BigTextStyle().bigText(model.content))
+      .setStyle(NotificationCompat.BigTextStyle().bigText("\n".plus(model.content)))
       //收到信息后状态栏显示的文字信息
       .setTicker(ConstUtils.NOTIFICATION_TICKER)
       //通知时间
@@ -62,7 +64,7 @@ class NotificationManager private constructor() {
       .setAutoCancel(false)
       .setContentIntent(pit)
       //通知默认的声音 震动 呼吸灯
-      .setDefaults(NotificationCompat.DEFAULT_ALL)
+//      .setDefaults(NotificationCompat.DEFAULT_ALL)
       //设置优先级
       .setPriority(NotificationCompat.PRIORITY_MAX)
       .build()

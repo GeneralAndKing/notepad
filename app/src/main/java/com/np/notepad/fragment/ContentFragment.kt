@@ -1,12 +1,18 @@
 package com.np.notepad.fragment
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.np.notepad.R
+import com.np.notepad.activity.MainActivity
 import com.np.notepad.base.BaseFragment
 import com.np.notepad.databinding.FragmentContentLayoutBinding
+import com.np.notepad.manager.DatabaseManager
+import com.np.notepad.model.NoteItem
+import com.np.notepad.util.ConstUtils
 import com.np.notepad.util.LoggerUtils
+import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import com.yuruiyin.richeditor.enumtype.RichTypeEnum
 import com.yuruiyin.richeditor.model.StyleBtnVm
 import kotlinx.android.synthetic.main.fragment_content_layout.*
@@ -14,29 +20,91 @@ import kotlinx.android.synthetic.main.fragment_content_layout.*
 class ContentFragment : BaseFragment() {
   //绑定XML布局文件
   private lateinit var binding: FragmentContentLayoutBinding
+  //item
+  private lateinit var noteItem: NoteItem
+  //保存按钮
+  private lateinit var rightImageButton: QMUIAlphaImageButton
+  //itemId
+  private var id: Long = 0
+  //is 编辑状态
+  private var edit: Boolean = false
+
 
   override fun onCreateView(): View {
     binding = FragmentContentLayoutBinding.inflate(LayoutInflater.from(activity), null, false)
     initTopBar()
+    LoggerUtils.i(arguments.toString())
     if (arguments != null) {
-      LoggerUtils.i(arguments.toString())
+      id = (arguments as Bundle).getLong(ConstUtils.ITEM_ID)
     }
+//    registerEvents()
+    initEdit()
     return binding.root
   }
 
-    /**
-     * 初始化bar
-     */
-    private fun initTopBar() {
-        binding.topbar.addLeftBackImageButton()
-            .setOnClickListener { popBackStack() }
-        binding.topbar.setTitle("编辑事件")
-        binding.topbar.addRightImageButton(R.drawable.icon_confirm, R.id.topbar_right_change_button)
-            .setOnClickListener { LoggerUtils.i("点击了保存按钮") }
+  private fun initEdit() {
+    if (id != 0L) {
+      noteItem = DatabaseManager.getInstance().find(id)!!
+      binding.etTitle.setText(noteItem.title)
+      binding.richEditText.setText(noteItem.content)
+    } else {
+      noteItem = NoteItem()
     }
+    binding.etTitle.setOnClickListener{
+      rightImageButton.visibility = View.VISIBLE
+      edit = true
+    }
+    binding.richEditText.setOnClickListener{
+      rightImageButton.visibility = View.VISIBLE
+      edit = true
+    }
+  }
 
-  override fun translucentFull(): Boolean = true
+  /**
+   * 初始化bar
+   */
+  private fun initTopBar() {
+    binding.topbar.addLeftBackImageButton()
+        .setOnClickListener { popBackStack() }
+    binding.topbar.setTitle("编辑事件")
+    rightImageButton = binding.topbar.addRightImageButton(R.drawable.icon_confirm, R.id.topbar_right_change_button)
+    rightImageButton.visibility = View.INVISIBLE
+    rightImageButton.setOnClickListener {
+      saveNotepad()
+      rightImageButton.visibility = View.INVISIBLE
+      edit = false
+    }
+  }
 
+  private fun saveNotepad() {
+    noteItem.title = binding.etTitle.text.toString()
+    noteItem.content = binding.richEditText.text.toString()
+    if (id != 0L) {
+      DatabaseManager.getInstance().update(noteItem)
+    } else {
+      DatabaseManager.getInstance().save(noteItem)
+    }
+    (requireActivity() as MainActivity).isChange = true
+  }
+
+  private fun registerEvents() {
+    // 清空内容
+    btnClearContent.setOnClickListener {
+      richEditText.clearContent()
+    }
+    // 粗体
+    initBold()
+    // 斜体
+    initItalic()
+    // 删除线
+    initStrikeThrough()
+    // 下划线
+    initUnderline()
+    // 标题
+    initHeadline()
+    // 引用
+    initBlockQuote()
+  }
 
   /**
    * 粗体
@@ -138,5 +206,14 @@ class ContentFragment : BaseFragment() {
       .build()
 
     richEditText.initStyleButton(styleBtnVm)
+  }
+
+  override fun translucentFull(): Boolean = true
+
+  override fun onLastFragmentFinish(): Any {
+    if (edit) {
+      saveNotepad()
+    }
+    return HomeFragment()
   }
 }

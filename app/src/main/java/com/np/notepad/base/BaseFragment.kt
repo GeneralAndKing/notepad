@@ -16,8 +16,4 @@ abstract class BaseFragment : QMUIFragment() {
         return if (moveEdge == SwipeBackLayout.EDGE_TOP || moveEdge == SwipeBackLayout.EDGE_BOTTOM) 0
         else QMUIDisplayHelper.dp2px(context, 100)
     }
-
-    override fun onLastFragmentFinish(): Any {
-        return HomeFragment()
-    }
 }
