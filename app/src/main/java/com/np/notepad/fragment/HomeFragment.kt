@@ -19,7 +19,6 @@ import com.np.notepad.model.enums.BackgroundTypeEnum
 import com.np.notepad.service.NotificationService
 import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
 import com.np.notepad.util.LoggerUtils
-import com.np.notepad.util.StringUtils
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog.CheckableDialogBuilder
 import java.util.*
@@ -29,16 +28,17 @@ class HomeFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeLayoutBinding
     //适配器
     private lateinit var mRecyclerViewAdapter: NoteItemAdapter
-    private var initDataTop: Int = 0
     //置顶数量
-    private var topSize: Int =
-        DatabaseManager.getInstance().getToppingSize()
+    private var topSize = DatabaseManager.getInstance().getToppingSize()
+    //item数据
+    private var notes = DatabaseManager.getInstance().getAll()
 
     override fun onCreateView(): View {
         binding = FragmentHomeLayoutBinding.inflate(
             LayoutInflater.from(activity), null, false
         )
         initTopBar()
+        initNotes()
         initList()
         LoggerUtils.i("topSize=$topSize")
         return binding.root
@@ -58,10 +58,6 @@ class HomeFragment : BaseFragment() {
         }
         binding.collapsingTopbarLayout.addOnOffsetUpdateListener { _, offset, expandFraction ->
             LoggerUtils.i("offset = $offset; expandFraction = $expandFraction")
-            if (initDataTop <= 1) {
-                initDataTop ++
-                initTop()
-            }
         }
     }
 
@@ -69,7 +65,6 @@ class HomeFragment : BaseFragment() {
      * 初始化内容列表
      */
     private fun initList() {
-        val notes = DatabaseManager.getInstance().getAll()
         mRecyclerViewAdapter = NoteItemAdapter(
             R.layout.note_item,
             notes,
@@ -81,7 +76,7 @@ class HomeFragment : BaseFragment() {
         mRecyclerViewAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN)
         //设置Item子控件点击事件
         mRecyclerViewAdapter.setOnItemChildClickListener { _, view, position ->
-            val item = mRecyclerViewAdapter.getItem(position)!!
+            val item = notes[position]
             when(view.id) {
                 R.id.textView -> startContentFragment(item.id)
                 // 提醒
@@ -176,19 +171,19 @@ class HomeFragment : BaseFragment() {
      * @param position item位置
      */
     private fun openItemTop(item: NoteItem, position: Int) {
-        val viewByPosition = getViewByPosition(position)
-        viewByPosition.text = StringUtils.getTitleHtmlText(
-            requireContext(), item.title, item.lastUpdateTime, true)
-        if (!item.top) {
+        if (notes.contains(item)) {
             item.top = true
-            mRecyclerViewAdapter.notifyItemMoved(position, 0)
-            binding.recyclerView.scrollToPosition(0)
             //保存数据库
             DatabaseManager.getInstance().update(item)
+            //判断是否是原位置顶
+            if (position != topSize) {
+                mRecyclerViewAdapter.notifyItemMoved(position, topSize)
+                Collections.swap(notes, position, topSize)
+            }
+            mRecyclerViewAdapter.notifyItemRangeChanged(
+                topSize, position - topSize + 1)
             //刷新置顶数量
-            topSize = DatabaseManager.getInstance().getToppingSize()
-            //设置图标
-            setViewIcon(position, R.id.btnTopping, R.drawable.btn_topping_close)
+            topSize++
         }
     }
 
@@ -196,30 +191,39 @@ class HomeFragment : BaseFragment() {
      * 取消指定position置顶
      */
     private fun closeItemTop(item: NoteItem, position: Int) {
-        val viewByPosition = getViewByPosition(position)
-        viewByPosition.text = StringUtils.getTitleHtmlText(
-            requireContext(), item.title, item.lastUpdateTime, false)
-        if (item.top) {
+        if (notes.contains(item)) {
             item.setToDefault("top")
             //保存数据库
             DatabaseManager.getInstance().update(item)
-            //设置图标
-            setViewIcon(position, R.id.btnTopping, R.drawable.btn_topping)
-            mRecyclerViewAdapter.notifyItemMoved(position, topSize - 1)
+            item.top = false
+            if (position != topSize - 1) {
+                //跟置顶最后一位交换位置
+                mRecyclerViewAdapter.notifyItemMoved(position, topSize - 1)
+                Collections.swap(notes, position, topSize - 1)
+            }
+            mRecyclerViewAdapter.notifyItemRangeChanged(
+                position, topSize - position + 1)
             //刷新置顶数量
-            topSize = DatabaseManager.getInstance().getToppingSize()
+            topSize--
         }
     }
 
     /**
-     * 初始化置顶
+     * 初始化Notes
      */
-    private fun initTop() {
-        mRecyclerViewAdapter.noteItemTops.sort()
-        for((i, position) in mRecyclerViewAdapter.noteItemTops.withIndex()) {
-            mRecyclerViewAdapter.setItemPosition(position, i)
+    private fun initNotes() {
+        //init top
+        val topPosition = mutableListOf<Int>()
+        for ((i, note) in notes.withIndex()) {
+            if (note.top) {
+                topPosition.add(i)
+            }
         }
-        binding.recyclerView.scrollToPosition(0)
+        for ((i, position) in topPosition.withIndex()) {
+            if (i != position) {
+                Collections.swap(notes, position, i)
+            }
+        }
     }
 
     /**
@@ -300,7 +304,6 @@ class HomeFragment : BaseFragment() {
         if ((requireActivity() as MainActivity).isChange) {
             binding.emptyView.hide()
             mRecyclerViewAdapter.replaceData(DatabaseManager.getInstance().getAll())
-            initTop()
             (requireActivity() as MainActivity).isChange = false
         }
     }
