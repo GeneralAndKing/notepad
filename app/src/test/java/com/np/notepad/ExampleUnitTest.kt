@@ -1,11 +1,7 @@
 package com.np.notepad
 
-import android.graphics.Color
-import com.np.notepad.manager.DatabaseManager
 import com.np.notepad.model.NoteItem
-import com.np.notepad.model.enums.NoteTypeEnum
 import org.junit.Test
-
 import org.junit.Assert.*
 import java.util.*
 
@@ -37,8 +33,6 @@ class ExampleUnitTest {
     note.title = "今天晚上要去吃小龙虾！"
     note.content = "配料：xxx想学习惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻寻寻寻学习嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻"
     note.lastUpdateTime = Date()
-    note.noteType = NoteTypeEnum.DEFAULT
-    note.backgroundColor = Color.BLUE
     print(note.save())
   }
 }
