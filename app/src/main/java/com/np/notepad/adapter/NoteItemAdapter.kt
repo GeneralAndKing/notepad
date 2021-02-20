@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.np.notepad.R
 import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.BackgroundTypeEnum
+import com.np.notepad.util.LoggerUtils
 import com.np.notepad.util.StringUtils
 
 /**

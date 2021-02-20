@@ -9,7 +9,7 @@ import java.util.*
 
 class StringUtils private constructor() {
   companion object {
-    private const val TOP_CHAR = "  ⇧置顶"
+    private const val TOP_CHAR = "  top"
     /**
      * 获取标题的html文本字符串
      * @param top 是否需要置顶

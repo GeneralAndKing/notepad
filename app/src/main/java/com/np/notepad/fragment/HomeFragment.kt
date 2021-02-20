@@ -303,7 +303,10 @@ class HomeFragment : BaseFragment() {
         super.onResume()
         if ((requireActivity() as MainActivity).isChange) {
             binding.emptyView.hide()
-            mRecyclerViewAdapter.replaceData(DatabaseManager.getInstance().getAll())
+            notes.clear()
+            notes.addAll(DatabaseManager.getInstance().getAll())
+            initNotes()
+            mRecyclerViewAdapter.notifyDataSetChanged()
             (requireActivity() as MainActivity).isChange = false
         }
     }

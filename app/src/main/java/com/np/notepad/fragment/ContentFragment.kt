@@ -17,7 +17,7 @@ import com.yuruiyin.richeditor.enumtype.RichTypeEnum
 import com.yuruiyin.richeditor.model.StyleBtnVm
 import kotlinx.android.synthetic.main.fragment_content_layout.*
 
-class ContentFragment : BaseFragment() {
+class ContentFragment : BaseFragment(), View.OnFocusChangeListener {
   //绑定XML布局文件
   private lateinit var binding: FragmentContentLayoutBinding
   //item
@@ -42,6 +42,25 @@ class ContentFragment : BaseFragment() {
     return binding.root
   }
 
+  override fun translucentFull(): Boolean = true
+
+  override fun onLastFragmentFinish(): Any {
+    if (edit) {
+      saveNotepad()
+    }
+    return HomeFragment()
+  }
+
+  // 焦点监听
+  override fun onFocusChange(v: View?, hasFocus: Boolean) {
+    if (v != null) {
+      if (v.id == R.id.etTitle || v.id == R.id.richEditText) {
+        rightImageButton.visibility = View.VISIBLE
+        edit = true
+      }
+    }
+  }
+
   private fun initEdit() {
     if (id != 0L) {
       noteItem = DatabaseManager.getInstance().find(id)!!
@@ -50,14 +69,9 @@ class ContentFragment : BaseFragment() {
     } else {
       noteItem = NoteItem()
     }
-    binding.etTitle.setOnClickListener{
-      rightImageButton.visibility = View.VISIBLE
-      edit = true
-    }
-    binding.richEditText.setOnClickListener{
-      rightImageButton.visibility = View.VISIBLE
-      edit = true
-    }
+    // 监听焦点
+    binding.etTitle.onFocusChangeListener = this
+    binding.etTitle.onFocusChangeListener = this
   }
 
   /**
@@ -65,7 +79,7 @@ class ContentFragment : BaseFragment() {
    */
   private fun initTopBar() {
     binding.topbar.addLeftBackImageButton()
-        .setOnClickListener { popBackStack() }
+      .setOnClickListener { popBackStack() }
     binding.topbar.setTitle("编辑事件")
     rightImageButton = binding.topbar.addRightImageButton(R.drawable.icon_confirm, R.id.topbar_right_change_button)
     rightImageButton.visibility = View.INVISIBLE
@@ -206,14 +220,5 @@ class ContentFragment : BaseFragment() {
       .build()
 
     richEditText.initStyleButton(styleBtnVm)
-  }
-
-  override fun translucentFull(): Boolean = true
-
-  override fun onLastFragmentFinish(): Any {
-    if (edit) {
-      saveNotepad()
-    }
-    return HomeFragment()
   }
 }

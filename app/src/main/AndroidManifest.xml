@@ -41,8 +41,9 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <!-- 通知服务 -->
         <service android:name=".service.NotificationService"
-            android:exported="false"
-            android:process=":remote"/>
+            android:priority="1000"
+            android:process=":remote"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -41,13 +41,20 @@ class NotificationService: Service() {
       val find = DatabaseManager.getInstance().find(longExtra)
       if (find != null) {
         model = find
-        NotificationManager.getInstance().showNotification(model)
-        notificationIds.add(model.id)
+        try {
+          NotificationManager.getInstance().showNotification(model)
+          notificationIds.add(model.id)
+        } catch (e: Exception) {
+          val noteItem = NoteItem()
+          noteItem.title = "异常"
+          noteItem.content = e.message.toString()
+          DatabaseManager.getInstance().save(noteItem)
+        }
       } else {
         LoggerUtils.e("NotificationService:查无id")
       }
     }
-    return super.onStartCommand(intent, flags, startId)
+    return START_STICKY
   }
 
   //Service被关闭之前回调

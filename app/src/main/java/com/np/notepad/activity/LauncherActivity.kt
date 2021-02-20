@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.np.notepad.fragment.HomeFragment
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity
-import com.qmuiteam.qmui.arch.QMUILatestVisit
 
 class LauncherActivity : Activity() {
 
