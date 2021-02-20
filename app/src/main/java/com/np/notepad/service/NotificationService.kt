@@ -29,30 +29,30 @@ class NotificationService: Service() {
   //Service被启动时调用
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     LoggerUtils.i("NotificationService onStartCommand")
-    val longExtra = intent!!.getLongExtra(ConstUtils.ITEM_ID, 0)
-    if (notificationIds.contains(longExtra)) {
-      NotificationManager.getInstance().cancelNotification(longExtra)
-      if (notificationIds.size - 1 == 0) {
-        stopSelf(startId)
-      } else {
-        notificationIds.remove(longExtra)
-      }
-    } else {
-      val find = DatabaseManager.getInstance().find(longExtra)
-      if (find != null) {
-        model = find
-        try {
-          NotificationManager.getInstance().showNotification(model)
-          notificationIds.add(model.id)
-        } catch (e: Exception) {
-          val noteItem = NoteItem()
-          noteItem.title = "异常"
-          noteItem.content = e.message.toString()
-          DatabaseManager.getInstance().save(noteItem)
+    try {
+      val longExtra = intent!!.getLongExtra(ConstUtils.ITEM_ID, 0)
+      if (notificationIds.contains(longExtra)) {
+        NotificationManager.getInstance().cancelNotification(longExtra)
+        if (notificationIds.size - 1 == 0) {
+          stopSelf(startId)
+        } else {
+          notificationIds.remove(longExtra)
         }
       } else {
-        LoggerUtils.e("NotificationService:查无id")
+        val find = DatabaseManager.getInstance().find(longExtra)
+        if (find != null) {
+          model = find
+          NotificationManager.getInstance().showNotification(model)
+          notificationIds.add(model.id)
+        } else {
+          throw java.lang.Exception("查无此id")
+        }
       }
+    } catch (e: Exception) {
+      val noteItem = NoteItem()
+      noteItem.title = "异常日志"
+      noteItem.content = e.message.toString()
+      DatabaseManager.getInstance().save(noteItem)
     }
     return START_STICKY
   }

@@ -27,6 +27,7 @@
             android:minHeight="?attr/qmui_topbar_height">
 
             <ImageView
+                android:id="@+id/homeImg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/common_example"

@@ -59,4 +59,33 @@
     <color name="base_white">#ffffffff</color>
     <color name="headline_normal_text_color">#ff1c1c1c</color>
     <color name="headline_light_text_color">#ff0cc975</color>
+
+    <!--  透明色  -->
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorRed">#FE6072</color>
+    <color name="colorRedDown">#A8424D</color>
+    <color name="colorRed_">#FF0000</color>
+    <color name="colorRed_dan">#940202</color>
+    <color name="colorGrey">#CFD3DE</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteTransparent_15">#26FFFFFF</color>
+    <color name="colorWhiteTransparent_46">#75FFFFFF</color>
+    <color name="colorWhiteTransparent_80">#CCFFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlack_65">#A6000000</color>
+    <color name="colorBlack_10">#1A000000</color>
+    <color name="colorDarkBlue">#03314D</color>
+    <!--  半透明灰底  -->
+    <color name="colorGrayTransparent_10">#1A3D3B3B</color>
+    <color name="colorGrayTransparent_25">#403D3B3B</color>
+    <color name="colorGrayTransparent_50">#993D3B3B</color>
+    <color name="colorGray">#3D3B3B</color>
+    <color name="black_20">#80000000</color>
+    <color name="primary">#3C515C</color>
+    <color name="accent">#40C4FF</color>
+    <color name="frame_search">#ADAEAD</color>
+    <color name="blue_bg_40">#66009DDA</color>
+    <color name="blue">#0292CA</color>
+    <color name="golden">#F0E369</color>
+    <color name="dark_golden">#BDB355</color>
 </resources>

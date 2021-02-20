@@ -57,4 +57,7 @@ dependencies {
     implementation "com.qmuiteam:qmui:$qmui_version"
     implementation "com.qmuiteam:arch:$qmui_version"
     kapt "com.qmuiteam:arch-compiler:$qmui_version"
+    // glide图像处理
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 }
