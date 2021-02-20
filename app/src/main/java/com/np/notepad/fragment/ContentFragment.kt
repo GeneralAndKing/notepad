@@ -17,7 +17,7 @@ import com.yuruiyin.richeditor.enumtype.RichTypeEnum
 import com.yuruiyin.richeditor.model.StyleBtnVm
 import kotlinx.android.synthetic.main.fragment_content_layout.*
 
-class ContentFragment : BaseFragment(), View.OnFocusChangeListener {
+class ContentFragment : BaseFragment(), View.OnFocusChangeListener, View.OnClickListener {
   //绑定XML布局文件
   private lateinit var binding: FragmentContentLayoutBinding
   //item
@@ -26,9 +26,6 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener {
   private lateinit var rightImageButton: QMUIAlphaImageButton
   //itemId
   private var id: Long = 0
-  //is 编辑状态
-  private var edit: Boolean = false
-
 
   override fun onCreateView(): View {
     binding = FragmentContentLayoutBinding.inflate(LayoutInflater.from(activity), null, false)
@@ -45,9 +42,6 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener {
   override fun translucentFull(): Boolean = true
 
   override fun onLastFragmentFinish(): Any {
-    if (edit) {
-      saveNotepad()
-    }
     return HomeFragment()
   }
 
@@ -56,8 +50,15 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener {
     if (v != null) {
       if (v.id == R.id.etTitle || v.id == R.id.richEditText) {
         rightImageButton.visibility = View.VISIBLE
-        edit = true
       }
+    }
+  }
+
+  // 点击事件监听
+  override fun onClick(v: View?) {
+    if (v != null) {
+      if (v.id == R.id.richEditText)
+        rightImageButton.visibility = View.VISIBLE
     }
   }
 
@@ -71,7 +72,8 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener {
     }
     // 监听焦点
     binding.etTitle.onFocusChangeListener = this
-    binding.etTitle.onFocusChangeListener = this
+    binding.richEditText.onFocusChangeListener = this
+    binding.richEditText.setOnClickListener(this)
   }
 
   /**
@@ -86,7 +88,6 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener {
     rightImageButton.setOnClickListener {
       saveNotepad()
       rightImageButton.visibility = View.INVISIBLE
-      edit = false
     }
   }
 

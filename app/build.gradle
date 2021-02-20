@@ -25,9 +25,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    //启动视图绑定
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        //启动视图绑定
+        viewBinding = true
     }
 }
 
