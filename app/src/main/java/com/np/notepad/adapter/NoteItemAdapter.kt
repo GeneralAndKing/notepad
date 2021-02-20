@@ -27,15 +27,16 @@ class NoteItemAdapter(
         backgroundEnum.resId.let {
             var text =
                 StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, false)
+            // 置顶
             if (item.top) {
-                text =
-                    StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, true)
+                text = StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, true)
                 //改变按钮
                 helper.setBackgroundRes(R.id.btnTopping, R.drawable.btn_topping_close)
             } else {
                 //防止图标错乱
                 helper.setBackgroundRes(R.id.btnTopping, R.drawable.btn_topping)
             }
+            // 提醒
             if (item.remind) {
                 //改变按钮
                 helper.setBackgroundRes(R.id.btnRemind, R.drawable.btn_remind_close)

@@ -82,13 +82,18 @@ class HomeFragment : BaseFragment() {
                 // 提醒
                 R.id.btnRemind -> {
                     //通知Intent init
+                    if (!item.remind) {
+                        item.remind = true
+                        DatabaseManager.getInstance().update(item)
+                    } else {
+                        item.setToDefault("remind")
+                        DatabaseManager.getInstance().update(item)
+                        item.remind = false
+                    }
+                    mRecyclerViewAdapter.notifyItemRangeChanged(position, 1)
                     val it = Intent(requireActivity(), NotificationService::class.java)
                     it.putExtra(ITEM_ID, item.id)
-                    if (!item.remind) {
-                        startRemindService(it, position, item)
-                    } else {
-                        stopRemindService(it, position, item)
-                    }
+                    requireActivity().startService(it)
                     closeSwipeMenu()
                 }
                 // 删除
@@ -133,28 +138,6 @@ class HomeFragment : BaseFragment() {
         } else {
             binding.emptyView.hide()
         }
-    }
-
-    /**
-     * 启动提醒服务
-     */
-    private fun startRemindService(intent: Intent, position: Int, item: NoteItem) {
-        item.remind = true
-        //设置图标
-        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind_close)
-        DatabaseManager.getInstance().update(item)
-        requireActivity().startService(intent)
-    }
-
-    /**
-     * 停止提醒服务
-     */
-    private fun stopRemindService(intent: Intent, position: Int, item: NoteItem) {
-        item.setToDefault("remind")
-        //设置图标
-        setViewIcon(position, R.id.btnRemind, R.drawable.btn_remind)
-        DatabaseManager.getInstance().update(item)
-        requireActivity().startService(intent)
     }
 
     /**
@@ -262,18 +245,6 @@ class HomeFragment : BaseFragment() {
         if (SwipeMenuLayout.getViewCache().isSwipeEnable) {
             SwipeMenuLayout.getViewCache().smoothClose()
         }
-    }
-
-    /**
-     * 设置指定位置的按钮图标
-     */
-    private fun setViewIcon(position: Int, viewId: Int, resId: Int) {
-        val viewByPosition = mRecyclerViewAdapter.getViewByPosition(
-            binding.recyclerView,
-            position,
-            viewId
-        )!!
-        viewByPosition.setBackgroundResource(resId)
     }
 
     /**
