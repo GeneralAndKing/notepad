@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.np.notepad">
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!--ACCESS_NETWORK_STATE对于 Glide 加载 URL 并不是必需的，但是它将帮助 Glide 处理*片状网络(flaky network)*和飞行模式-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--用于访问网络，网络定位需要上网-->
     <uses-permission android:name="android.permission.INTERNET" />
     <application

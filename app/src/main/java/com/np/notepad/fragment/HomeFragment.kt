@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment() {
         )
         // 加载图像
         Glide.with(requireContext())
-            .load(imgUrls[(0..imgUrls.size).random()])
+            .load(imgUrls[(0 until imgUrls.size).random()])
             .into(binding.homeImg)
         initTopBar()
         initNotes()

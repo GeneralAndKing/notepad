@@ -10,6 +10,7 @@ import com.np.notepad.base.BaseFragment
 import com.np.notepad.databinding.FragmentContentLayoutBinding
 import com.np.notepad.manager.DatabaseManager
 import com.np.notepad.model.NoteItem
+import com.np.notepad.model.enums.BackgroundTypeEnum
 import com.np.notepad.util.ConstUtils
 import com.np.notepad.util.LoggerUtils
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
@@ -94,6 +95,8 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener, View.OnClick
   private fun saveNotepad() {
     noteItem.title = binding.etTitle.text.toString()
     noteItem.content = binding.richEditText.text.toString()
+    // 随机选取背景色
+    noteItem.background = BackgroundTypeEnum.values()[(BackgroundTypeEnum.values().indices).random()].name
     if (id != 0L) {
       DatabaseManager.getInstance().update(noteItem)
     } else {

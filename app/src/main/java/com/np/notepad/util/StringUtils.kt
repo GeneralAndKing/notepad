@@ -9,7 +9,7 @@ import java.util.*
 
 class StringUtils private constructor() {
   companion object {
-    private const val TOP_CHAR = "  top"
+    private const val TOP_CHAR = "<big><strong><font face=\"arial\" color=\"red\">&nbsp;&nbsp;Top</font></strong></big>"
     /**
      * 获取标题的html文本字符串
      * @param top 是否需要置顶
@@ -22,7 +22,7 @@ class StringUtils private constructor() {
       }
       // data color
       val colorString: String?
-      // text
+      // html text
       return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         colorString = ColorUtils.colorToString(
           context.resources.getColor(R.color.note_date_color_grey, null))
