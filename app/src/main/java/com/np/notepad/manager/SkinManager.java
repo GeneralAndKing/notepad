@@ -24,6 +24,9 @@ import com.qmuiteam.qmui.skin.QMUISkinManager;
 
 import java.util.Objects;
 
+/**
+ * 皮肤管理
+ */
 public class SkinManager {
     public static final int SKIN_BLUE = 1;
     public static final int SKIN_DARK = 2;

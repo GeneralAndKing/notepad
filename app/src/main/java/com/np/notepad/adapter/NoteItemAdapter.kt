@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.np.notepad.R
 import com.np.notepad.model.NoteItem
-import com.np.notepad.model.enums.BackgroundTypeEnum
+import com.np.notepad.model.enums.ItemSkinEnum
 import com.np.notepad.util.StringUtils
 
 /**
@@ -23,7 +23,7 @@ class NoteItemAdapter(
     }
 
     override fun convert(helper: BaseViewHolder, item: NoteItem?) {
-        val backgroundEnum = BackgroundTypeEnum.getEnumByName(item!!.background)
+        val backgroundEnum = ItemSkinEnum.getEnumByName(item!!.background)
         backgroundEnum.resId.let {
             var text =
                 StringUtils.getTitleHtmlText(mContext, item.title, item.lastUpdateTime, false)

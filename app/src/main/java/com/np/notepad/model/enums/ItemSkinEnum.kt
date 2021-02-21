@@ -6,7 +6,7 @@ import com.np.notepad.R
  * 笔记背景类型
  * @author z f
  */
-enum class BackgroundTypeEnum(val resId: Int, val des: String) {
+enum class ItemSkinEnum(val resId: Int, val des: String) {
     RED(R.drawable.item_red_background,"红色"),
     YELLOW(R.drawable.item_yellow_background,"黄色"),
     CYAN(R.drawable.item_cyan_background,"青色"),
@@ -28,7 +28,7 @@ enum class BackgroundTypeEnum(val resId: Int, val des: String) {
         /**
          * 根据name获取枚举
          */
-        fun getEnumByName(codeVal: String?): BackgroundTypeEnum {
+        fun getEnumByName(codeVal: String?): ItemSkinEnum {
             for (e in values()) {
                 if (e.name.equals(codeVal, ignoreCase = true)) {
                     return e

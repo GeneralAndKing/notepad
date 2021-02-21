@@ -7,7 +7,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.fragment.app.FragmentContainerView
-import com.np.notepad.NoteApplication
 import com.np.notepad.R
 import com.np.notepad.base.BaseFragmentActivity
 import com.np.notepad.fragment.ContentFragment
@@ -39,6 +38,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups
 @LatestVisitRecord
 class MainActivity : BaseFragmentActivity() {
 
+    // 是否刷新
     var isChange: Boolean = false
 
     companion object {
@@ -226,6 +226,7 @@ class MainActivity : BaseFragmentActivity() {
                 )
             )
             globalBtn = QMUIRadiusImageView2(context)
+            // 图标
             globalBtn.setImageResource(R.mipmap.icon_theme)
             globalBtn.scaleType = ImageView.ScaleType.CENTER_INSIDE
             globalBtn.setRadiusAndShadow(
@@ -259,15 +260,18 @@ class MainActivity : BaseFragmentActivity() {
             touchSlop = ViewConfiguration.get(context).scaledTouchSlop
         }
 
+        /**
+         * 圆形悬浮窗点击触发
+         */
         private fun showGlobalActionPopup(v: View?) {
-            val data = listOf("Change Skin",
-                "Export SkinMaker Result")
+            val data = listOf(
+                "主题色")
             val adapter = ArrayAdapter(context, R.layout.simple_list_item, data)
             val onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, i, _ ->
                     if (i == 0) {
                         val items =
-                            arrayOf("蓝色（默认）", "黑色", "白色")
+                            arrayOf("蓝色", "黑色", "白色")
                         MenuDialogBuilder(context)
                             .addItems(
                                 items
@@ -278,8 +282,6 @@ class MainActivity : BaseFragmentActivity() {
                             .setSkinManager(QMUISkinManager.defaultInstance(context))
                             .create()
                             .show()
-                    } else if (i == 1) {
-                        NoteApplication.openSkinMake = !NoteApplication.openSkinMake
                     }
                     if (mGlobalAction != null) {
                         mGlobalAction!!.dismiss()

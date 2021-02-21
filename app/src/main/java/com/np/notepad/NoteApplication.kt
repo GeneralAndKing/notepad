@@ -14,7 +14,6 @@ class NoteApplication : Application() {
 
     companion object {
         lateinit var context: Context
-        var openSkinMake = false
     }
 
     override fun onCreate() {

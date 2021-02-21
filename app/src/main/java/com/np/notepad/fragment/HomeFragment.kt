@@ -16,10 +16,9 @@ import com.np.notepad.base.BaseFragment
 import com.np.notepad.databinding.FragmentHomeLayoutBinding
 import com.np.notepad.manager.DatabaseManager
 import com.np.notepad.model.NoteItem
-import com.np.notepad.model.enums.BackgroundTypeEnum
+import com.np.notepad.model.enums.ItemSkinEnum
 import com.np.notepad.service.NotificationService
 import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
-import com.np.notepad.util.LoggerUtils
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog.CheckableDialogBuilder
 import java.util.*
@@ -51,10 +50,21 @@ class HomeFragment : BaseFragment() {
         Glide.with(requireContext())
             .load(imgUrls[(0 until imgUrls.size).random()])
             .into(binding.homeImg)
+        // 初始化top bar
         initTopBar()
+        // 初始化数据
         initNotes()
-        initList()
+        // 初始化列表视图
+        initListView()
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 刷新列表
+        refreshListView()
+        // 判断默认列表需要显示还是隐藏
+        decideEmptyViewShow()
     }
 
     /**
@@ -66,18 +76,12 @@ class HomeFragment : BaseFragment() {
                 startContentFragment(0)
             }
         binding.collapsingTopbarLayout.title = getString(R.string.app_name)
-        binding.collapsingTopbarLayout.setScrimUpdateListener { animation ->
-            LoggerUtils.i("scrim: " + animation.animatedValue)
-        }
-        binding.collapsingTopbarLayout.addOnOffsetUpdateListener { _, offset, expandFraction ->
-            LoggerUtils.i("offset = $offset; expandFraction = $expandFraction")
-        }
     }
 
     /**
      * 初始化内容列表
      */
-    private fun initList() {
+    private fun initListView() {
         mRecyclerViewAdapter = NoteItemAdapter(
             R.layout.note_item,
             notes,
@@ -110,7 +114,10 @@ class HomeFragment : BaseFragment() {
                     closeSwipeMenu()
                 }
                 // 删除
-                R.id.btnDelete -> removeItem(position, item.id)
+                R.id.btnDelete -> {
+                    removeItem(position, item.id)
+                    // 判断默认列表需要显示还是隐藏
+                    decideEmptyViewShow()}
                 // 置顶
                 R.id.btnTopping -> {
                     if (!item.top) {
@@ -124,13 +131,13 @@ class HomeFragment : BaseFragment() {
                 // 换肤
                 R.id.btnSkin -> {
                     var i = 0
-                    for(background in BackgroundTypeEnum.values()) {
+                    for(background in ItemSkinEnum.values()) {
                         if (item.background == background.name) {
                             showSingleBackgroundDialog(
                                 item,
                                 position,
                                 i,
-                                BackgroundTypeEnum.getDesArray())
+                                ItemSkinEnum.getDesArray())
                             break
                         }
                         i ++
@@ -141,16 +148,7 @@ class HomeFragment : BaseFragment() {
         //设置适配器
         binding.recyclerView.adapter = mRecyclerViewAdapter
         //配置默认view
-        if (notes.size == 0) {
-            binding.emptyView.show(
-                false,
-                "未创建笔记",
-                null,
-                "点击创建笔记"
-            ) { startContentFragment(0) }
-        } else {
-            binding.emptyView.hide()
-        }
+        decideEmptyViewShow()
     }
 
     /**
@@ -223,8 +221,8 @@ class HomeFragment : BaseFragment() {
     }
 
     /**
-     * 选择背景颜色弹窗
-     * @param item 当前选择背景的item
+     * 选择item颜色弹窗
+     * @param item 当前选择item
      * @param position item位置
      * @param checkedIndex 选中index
      * @param items 选择列表
@@ -239,11 +237,11 @@ class HomeFragment : BaseFragment() {
             .setSkinManager(QMUISkinManager.defaultInstance(context))
             .addItems(items) { dialog, which ->
                 dialog.cancel()
-                if (item.background != BackgroundTypeEnum.values()[which].name) {
+                if (item.background != ItemSkinEnum.values()[which].name) {
                     val textView = getViewByPosition(position)
-                    textView.setBackgroundResource(BackgroundTypeEnum.values()[which].resId)
+                    textView.setBackgroundResource(ItemSkinEnum.values()[which].resId)
                     //保存到数据库
-                    item.background = BackgroundTypeEnum.values()[which].name
+                    item.background = ItemSkinEnum.values()[which].name
                     DatabaseManager.getInstance().update(item)
                 }
                 closeSwipeMenu()
@@ -283,15 +281,27 @@ class HomeFragment : BaseFragment() {
         startFragment(fragment)
     }
 
-    override fun onResume() {
-        super.onResume()
+    /**
+     * 刷新列表
+     */
+    private fun refreshListView() {
         if ((requireActivity() as MainActivity).isChange) {
-            binding.emptyView.hide()
             notes.clear()
             notes.addAll(DatabaseManager.getInstance().getAll())
             initNotes()
             mRecyclerViewAdapter.notifyDataSetChanged()
             (requireActivity() as MainActivity).isChange = false
+        }
+    }
+
+    /**
+     * 判断默认view是否显示
+    */
+    private fun decideEmptyViewShow() {
+        if (notes.size == 0 || mRecyclerViewAdapter.data.size == 0) {
+            binding.emptyView.show(null, "时代的一粒灰\n\n落到个人头上\n\n就是一座山")
+        } else {
+            binding.emptyView.hide()
         }
     }
 

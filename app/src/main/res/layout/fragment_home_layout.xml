@@ -52,8 +52,8 @@
     <com.qmuiteam.qmui.widget.QMUIEmptyView
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:layout_height="450dp"
+        android:layout_marginTop="?attr/qmui_topbar_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:visibility="invisible"/>
 
