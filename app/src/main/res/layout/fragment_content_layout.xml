@@ -10,7 +10,7 @@
         android:id="@+id/option"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/dp_10"
+        android:padding="12dp"
         android:layout_marginTop="80dp">
 
         <ImageView
@@ -145,7 +145,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="60dp">
 
             <LinearLayout
@@ -157,26 +157,19 @@
                     android:id="@+id/etTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_corner"
                     android:hint="请输入标题..."
                     android:inputType="textMultiLine"
-                    android:maxLength="40"
-                    android:maxLines="2"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="16dp"
-                    android:textColor="#5C5858"
-                    android:textColorHint="#5C5858"
-                    android:textSize="19sp"
-                    android:textStyle="bold" />
+                    android:maxLength="28"
+                    android:maxLines="1"
+                    android:textSize="16sp"
+                    android:paddingBottom="15dp"
+                    android:autofillHints="@string/app_name" />
 
                 <com.yuruiyin.richeditor.RichEditText
                     android:id="@+id/richEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_corner"
+                    android:layout_marginTop="5dp"
                     android:cursorVisible="true"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
@@ -185,13 +178,8 @@
                     android:inputType="textMultiLine"
                     android:lineSpacingExtra="5dp"
                     android:maxLength="20000"
-                    android:minHeight="350dp"
-                    android:paddingStart="@dimen/editor_padding_left"
-                    android:paddingTop="23dp"
-                    android:paddingEnd="@dimen/editor_padding_right"
-                    android:paddingBottom="70dp"
-                    android:textColor="#5C5858"
-                    android:textColorHint="#5C5858"
+                    android:paddingBottom="15dp"
+                    android:minHeight="300dp"
                     android:textSize="16sp"
                     app:editor_headline_text_size="20dp"
                     app:editor_image_radius="5dp"
@@ -199,21 +187,22 @@
                     app:editor_show_long_image_mark="true"
                     app:editor_show_video_mark="true"
                     app:editor_video_mark_resource_id="@mipmap/editor_video_mark_icon" />
-            </LinearLayout>
-        </ScrollView>
 
-        <Button
-            android:id="@+id/btnClearContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="495dp"
-            android:background="@drawable/btn_radius"
-            android:gravity="center"
-            android:layout_alignParentEnd="true"
-            android:padding="5dp"
-            android:text="清空"
-            android:textColor="#ff000000"
-            android:textSize="16sp" />
+                <Button
+                    android:id="@+id/btnClearContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_radius"
+                    android:gravity="center"
+                    android:layout_gravity="end"
+                    android:padding="5dp"
+                    android:text="清空"
+                    android:textColor="#ff000000"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </ScrollView>
     </RelativeLayout>
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
         android:id="@+id/topbar"

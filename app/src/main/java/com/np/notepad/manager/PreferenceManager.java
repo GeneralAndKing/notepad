@@ -12,7 +12,7 @@ public class PreferenceManager {
     private static final String APP_SKIN_INDEX = "app_skin_index";
 
     private PreferenceManager(Context context) {
-        sPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        sPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
     }
 
     public static PreferenceManager getInstance(Context context) {
