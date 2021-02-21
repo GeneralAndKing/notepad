@@ -17,34 +17,31 @@ package com.np.notepad.manager;
 
 import android.content.Context;
 import android.content.res.Configuration;
-
 import com.np.notepad.NoteApplication;
-import com.np.notepad.R;
+import com.np.notepad.model.enums.ThemeSkinEnum;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
-
 import java.util.Objects;
 
 /**
- * 皮肤管理
+ * app主题管理
  */
 public class SkinManager {
-    public static final int SKIN_BLUE = 1;
-    public static final int SKIN_DARK = 2;
-    public static final int SKIN_WHITE = 3;
-
 
     public static void install(Context context) {
         QMUISkinManager skinManager = QMUISkinManager.defaultInstance(context);
-        skinManager.addSkin(SKIN_BLUE, R.style.app_skin_blue);
-        skinManager.addSkin(SKIN_DARK, R.style.app_skin_dark);
-        skinManager.addSkin(SKIN_WHITE, R.style.app_skin_white);
+        skinManager.addSkin(ThemeSkinEnum.SKIN_BLUE.getCode(), ThemeSkinEnum.SKIN_BLUE.getStyleId());
+        skinManager.addSkin(ThemeSkinEnum.SKIN_DARK.getCode(), ThemeSkinEnum.SKIN_DARK.getStyleId());
+        skinManager.addSkin(ThemeSkinEnum.SKIN_WHITE.getCode(), ThemeSkinEnum.SKIN_WHITE.getStyleId());
+        // 是否黑夜模式
         boolean isDarkMode = (context.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        // 获取本地设置主题
         int storeSkinIndex = PreferenceManager.getInstance(context).getSkinIndex();
-        if (isDarkMode && storeSkinIndex != SKIN_DARK) {
-            skinManager.changeSkin(SKIN_DARK);
-        } else if (!isDarkMode && storeSkinIndex == SKIN_DARK) {
-            skinManager.changeSkin(SKIN_BLUE);
+        // 设置主题
+        if (isDarkMode && storeSkinIndex != ThemeSkinEnum.SKIN_DARK.getCode()) {
+            skinManager.changeSkin(ThemeSkinEnum.SKIN_DARK.getCode());
+        } else if (!isDarkMode && storeSkinIndex == ThemeSkinEnum.SKIN_DARK.getCode()) {
+            skinManager.changeSkin(ThemeSkinEnum.SKIN_BLUE.getCode());
         }else{
             skinManager.changeSkin(storeSkinIndex);
         }
@@ -55,6 +52,9 @@ public class SkinManager {
         PreferenceManager.getInstance(Objects.requireNonNull(NoteApplication.Companion.getContext())).setSkinIndex(index);
     }
 
+    /**
+     * 当前主题code值
+     */
     public static int getCurrentSkin() {
         return QMUISkinManager.defaultInstance(Objects.requireNonNull(NoteApplication.Companion.getContext())).getCurrentSkin();
     }

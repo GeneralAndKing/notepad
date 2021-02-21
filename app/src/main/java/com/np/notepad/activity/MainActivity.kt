@@ -1,5 +1,6 @@
 package com.np.notepad.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -12,6 +13,7 @@ import com.np.notepad.base.BaseFragmentActivity
 import com.np.notepad.fragment.ContentFragment
 import com.np.notepad.fragment.HomeFragment
 import com.np.notepad.manager.SkinManager
+import com.np.notepad.model.enums.ThemeSkinEnum
 import com.qmuiteam.qmui.arch.SwipeBackLayout
 import com.qmuiteam.qmui.arch.annotation.DefaultFirstFragment
 import com.qmuiteam.qmui.arch.annotation.FirstFragments
@@ -25,9 +27,10 @@ import com.qmuiteam.qmui.util.QMUIResHelper
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.util.QMUIViewOffsetHelper
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView2
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog.MenuDialogBuilder
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.popup.QMUIPopup
 import com.qmuiteam.qmui.widget.popup.QMUIPopups
+import kotlin.math.sqrt
 
 @FirstFragments(value = [
     HomeFragment::class,
@@ -45,9 +48,10 @@ class MainActivity : BaseFragmentActivity() {
         private var mGlobalAction: QMUIPopup? = null
     }
 
+    // 主题监听
     private val mOnSkinChangeListener =
-        OnSkinChangeListener { skinManager, oldSkin, newSkin ->
-            if (newSkin == SkinManager.SKIN_WHITE) {
+        OnSkinChangeListener { _, _, newSkin ->
+            if (newSkin == ThemeSkinEnum.SKIN_WHITE.code) {
                 QMUIStatusBarHelper.setStatusBarLightMode(this)
             } else {
                 QMUIStatusBarHelper.setStatusBarDarkMode(this)
@@ -77,6 +81,7 @@ class MainActivity : BaseFragmentActivity() {
         }
     }
 
+    @SuppressLint("ViewConstructor")
     internal class CustomRootView(
         context: Context?,
         fragmentContainerId: Int
@@ -117,7 +122,7 @@ class MainActivity : BaseFragmentActivity() {
                 if (!isDragging && isTouchDownInGlobalBtn) {
                     val dx = (x - touchDownX).toInt()
                     val dy = (y - touchDownY).toInt()
-                    if (Math.sqrt(dx * dx + dy * dy.toDouble()) > touchSlop) {
+                    if (sqrt(dx * dx + dy * dy.toDouble()) > touchSlop) {
                         isDragging = true
                     }
                 }
@@ -158,6 +163,7 @@ class MainActivity : BaseFragmentActivity() {
             return globalBtn.left < x && globalBtn.right > x && globalBtn.top < y && globalBtn.bottom > y
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         override fun onTouchEvent(event: MotionEvent): Boolean {
             val x = event.x
             val y = event.y
@@ -172,7 +178,7 @@ class MainActivity : BaseFragmentActivity() {
                 if (!isDragging && isTouchDownInGlobalBtn) {
                     val dx = (x - touchDownX).toInt()
                     val dy = (y - touchDownY).toInt()
-                    if (Math.sqrt(dx * dx + dy * dy.toDouble()) > touchSlop) {
+                    if (sqrt(dx * dx + dy * dy.toDouble()) > touchSlop) {
                         isDragging = true
                     }
                 }
@@ -215,7 +221,7 @@ class MainActivity : BaseFragmentActivity() {
 
         init {
             fragmentContainer.id = fragmentContainerId
-            fragmentContainer.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            fragmentContainer.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
                 for (i in 0 until childCount) {
                     SwipeBackLayout.updateLayoutInSwipeBack(getChildAt(i))
                 }
@@ -270,18 +276,19 @@ class MainActivity : BaseFragmentActivity() {
             val onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, i, _ ->
                     if (i == 0) {
-                        val items =
-                            arrayOf("蓝色", "黑色", "白色")
-                        MenuDialogBuilder(context)
-                            .addItems(
-                                items
-                            ) { dialog, which ->
-                                SkinManager.changeSkin(which + 1)
+                        // 选项
+                        val items = ThemeSkinEnum.getDes()
+                        // 选择主题
+                        QMUIDialog.CheckableDialogBuilder(context)
+                            // 默认值
+                            .setCheckedIndex(ThemeSkinEnum.getValuesIndex(SkinManager.getCurrentSkin()))
+                            .setSkinManager(QMUISkinManager.defaultInstance(context))
+                            .addItems(items) { dialog, which ->
+                                // 选择
+                                SkinManager.changeSkin(ThemeSkinEnum.values()[which].code)
                                 dialog.dismiss()
                             }
-                            .setSkinManager(QMUISkinManager.defaultInstance(context))
-                            .create()
-                            .show()
+                            .create(com.qmuiteam.qmui.R.style.QMUI_Dialog).show()
                     }
                     if (mGlobalAction != null) {
                         mGlobalAction!!.dismiss()

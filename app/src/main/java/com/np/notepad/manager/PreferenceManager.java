@@ -3,6 +3,7 @@ package com.np.notepad.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.np.notepad.model.enums.ThemeSkinEnum;
 
 public class PreferenceManager {
     private static SharedPreferences sPreferences;
@@ -28,6 +29,6 @@ public class PreferenceManager {
     }
 
     public int getSkinIndex() {
-        return sPreferences.getInt(APP_SKIN_INDEX, SkinManager.SKIN_BLUE);
+        return sPreferences.getInt(APP_SKIN_INDEX, ThemeSkinEnum.SKIN_BLUE.getCode());
     }
 }

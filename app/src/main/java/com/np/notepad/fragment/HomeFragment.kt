@@ -137,7 +137,7 @@ class HomeFragment : BaseFragment() {
                                 item,
                                 position,
                                 i,
-                                ItemSkinEnum.getDesArray())
+                                ItemSkinEnum.getDes())
                             break
                         }
                         i ++

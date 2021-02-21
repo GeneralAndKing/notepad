@@ -17,7 +17,7 @@ enum class ItemSkinEnum(val resId: Int, val des: String) {
         /**
          * 获取DesArray
          */
-        fun getDesArray(): Array<String> {
+        fun getDes(): Array<String> {
             val desArray: Array<String> = Array(values().size) {""}
             for ((i, noteType) in values().withIndex()) {
                 desArray[i] = noteType.des
