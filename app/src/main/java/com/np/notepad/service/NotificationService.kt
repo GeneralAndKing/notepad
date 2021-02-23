@@ -5,16 +5,13 @@ import android.content.Intent
 import android.os.IBinder
 import com.np.notepad.manager.DatabaseManager
 import com.np.notepad.manager.NotificationManager
-import com.np.notepad.model.NoteItem
+import com.np.notepad.manager.PreferenceManager
 import com.np.notepad.util.ConstUtils
-import com.np.notepad.util.LoggerUtils
 
 class NotificationService: Service() {
 
-  //当前item
-  private lateinit var model: NoteItem
   //ids
-  private val notificationIds = mutableListOf<Long>()
+  private var notificationIds = mutableSetOf<String>()
 
   override fun onBind(intent: Intent?): IBinder? {
     return null
@@ -22,44 +19,43 @@ class NotificationService: Service() {
 
   //Service被创建时调用
   override fun onCreate() {
-    LoggerUtils.i("NotificationService启动")
     super.onCreate()
+    notificationIds.addAll(PreferenceManager.getInstance().noticeIds)
   }
 
   //Service被启动时调用
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    LoggerUtils.i("NotificationService onStartCommand")
     try {
       val longExtra = intent!!.getLongExtra(ConstUtils.ITEM_ID, 0)
-      if (notificationIds.contains(longExtra)) {
+      // 存在则关闭通知
+      if (notificationIds.contains(longExtra.toString())) {
         NotificationManager.getInstance().cancelNotification(longExtra)
         if (notificationIds.size - 1 == 0) {
           stopSelf(startId)
         } else {
-          notificationIds.remove(longExtra)
+          notificationIds.remove(longExtra.toString())
         }
-      } else {
+      }
+      // 显示通知
+      else {
         val find = DatabaseManager.getInstance().find(longExtra)
         if (find != null) {
-          model = find
-          NotificationManager.getInstance().showNotification(model)
-          notificationIds.add(model.id)
+          NotificationManager.getInstance().showNotification(find)
+          notificationIds.add(find.id.toString())
         } else {
           throw java.lang.Exception("查无此id")
         }
       }
     } catch (e: Exception) {
-      val noteItem = NoteItem()
-      noteItem.title = "异常日志"
-      noteItem.content = e.message.toString()
-      DatabaseManager.getInstance().save(noteItem)
+      DatabaseManager.getInstance().log(e.message.toString())
     }
     return START_STICKY
   }
 
   //Service被关闭之前回调
   override fun onDestroy() {
-    LoggerUtils.i("NotificationService停止")
+    // 保存本地
+    PreferenceManager.getInstance().noticeIds = notificationIds
     super.onDestroy()
   }
 }

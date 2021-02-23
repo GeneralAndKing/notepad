@@ -36,7 +36,7 @@ public class SkinManager {
         boolean isDarkMode = (context.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
         // 获取本地设置主题
-        int storeSkinIndex = PreferenceManager.getInstance(context).getSkinIndex();
+        int storeSkinIndex = PreferenceManager.getInstance().getSkinIndex();
         // 设置主题
         if (isDarkMode && storeSkinIndex != ThemeSkinEnum.SKIN_DARK.getCode()) {
             skinManager.changeSkin(ThemeSkinEnum.SKIN_DARK.getCode());
@@ -49,7 +49,7 @@ public class SkinManager {
 
     public static void changeSkin(int index) {
         QMUISkinManager.defaultInstance(Objects.requireNonNull(NoteApplication.Companion.getContext())).changeSkin(index);
-        PreferenceManager.getInstance(Objects.requireNonNull(NoteApplication.Companion.getContext())).setSkinIndex(index);
+        PreferenceManager.getInstance().setSkinIndex(index);
     }
 
     /**

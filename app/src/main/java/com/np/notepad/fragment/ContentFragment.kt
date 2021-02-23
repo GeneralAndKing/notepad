@@ -12,7 +12,7 @@ import com.np.notepad.manager.DatabaseManager
 import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.ItemSkinEnum
 import com.np.notepad.util.ConstUtils
-import com.np.notepad.util.LoggerUtils
+import com.np.notepad.util.Log
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import com.yuruiyin.richeditor.enumtype.RichTypeEnum
 import com.yuruiyin.richeditor.model.StyleBtnVm
@@ -31,7 +31,7 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener, View.OnClick
   override fun onCreateView(): View {
     binding = FragmentContentLayoutBinding.inflate(LayoutInflater.from(activity), null, false)
     initTopBar()
-    LoggerUtils.i(arguments.toString())
+    Log.i(arguments.toString())
     if (arguments != null) {
       id = (arguments as Bundle).getLong(ConstUtils.ITEM_ID)
     }

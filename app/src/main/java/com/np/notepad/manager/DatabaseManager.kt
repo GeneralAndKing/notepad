@@ -15,6 +15,16 @@ class DatabaseManager private constructor() {
   }
 
   /**
+   * save
+   */
+  fun log(text: String) {
+    val item = NoteItem()
+    item.title = "err"
+    item.content = text
+    item.save()
+  }
+
+  /**
    * get Topping size
    */
   fun getToppingSize(): Int = LitePal.findAll<NoteItem>().filter { it.top }.size

@@ -41,6 +41,11 @@ class HomeFragment : BaseFragment() {
         "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
         "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
         "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg")
+    // 文案
+    private val essay = mutableListOf(
+        "时代的一粒灰\n\n落到个人头上\n\n就是一座山",
+        "过春风十里\n\n尽荠麦青青",
+        "要温柔起来\n\n像一朵穿裤子的云")
 
     override fun onCreateView(): View {
         binding = FragmentHomeLayoutBinding.inflate(
@@ -108,14 +113,23 @@ class HomeFragment : BaseFragment() {
                         item.remind = false
                     }
                     mRecyclerViewAdapter.notifyItemRangeChanged(position, 1)
-                    val it = Intent(requireActivity(), NotificationService::class.java)
-                    it.putExtra(ITEM_ID, item.id)
-                    requireActivity().startService(it)
+                    // 通知
+                    callNotificationService(item.id)
                     closeSwipeMenu()
+//                    // 检查是否状态是否同步 以实际通知为准
+//                    if (PreferenceManager.getInstance().existNoticeId(item.id.toString()) != item.remind) {
+//                        if (PreferenceManager.getInstance().existNoticeId(item.id.toString())) {
+//                            item.remind = true
+//                        } else {
+//                            item.setToDefault("remind")
+//                        }
+//                        DatabaseManager.getInstance().update(item)
+//                    }
                 }
                 // 删除
                 R.id.btnDelete -> {
                     removeItem(position, item.id)
+                    callNotificationService(item.id)
                     // 判断默认列表需要显示还是隐藏
                     decideEmptyViewShow()}
                 // 置顶
@@ -295,11 +309,20 @@ class HomeFragment : BaseFragment() {
     }
 
     /**
+     * 调用通知服务
+     */
+    private fun callNotificationService(id: Long) {
+        val it = Intent(requireActivity(), NotificationService::class.java)
+        it.putExtra(ITEM_ID, id)
+        requireActivity().startService(it)
+    }
+
+    /**
      * 判断默认view是否显示
     */
     private fun decideEmptyViewShow() {
         if (notes.size == 0 || mRecyclerViewAdapter.data.size == 0) {
-            binding.emptyView.show(null, "时代的一粒灰\n\n落到个人头上\n\n就是一座山")
+            binding.emptyView.show(null, essay[(0 until essay.size).random()])
         } else {
             binding.emptyView.hide()
         }

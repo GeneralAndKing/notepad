@@ -16,7 +16,7 @@ import com.np.notepad.R
 import com.np.notepad.activity.MainActivity
 import com.np.notepad.model.NoteItem
 import com.np.notepad.util.ConstUtils
-import com.np.notepad.util.LoggerUtils
+import com.np.notepad.util.Log
 
 class NotificationManager private constructor() {
   private var mContext: Context = NoteApplication.context
@@ -31,7 +31,7 @@ class NotificationManager private constructor() {
   }
 
   fun showNotification(model: NoteItem) {
-    LoggerUtils.i(model.toString())
+    Log.i(model.toString())
     //设置Intent 返回应用
     val it = Intent(Intent.ACTION_MAIN)
     it.addCategory(Intent.CATEGORY_LAUNCHER)

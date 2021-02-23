@@ -10,7 +10,7 @@ import com.orhanobut.logger.PrettyFormatStrategy;
  *
  * @author fengxin
  */
-public class LoggerUtils {
+public class Log {
 
     /**
      * 打印log开关
@@ -74,5 +74,5 @@ public class LoggerUtils {
         }
     }
 
-    private LoggerUtils(){}
+    private Log(){}
 }
