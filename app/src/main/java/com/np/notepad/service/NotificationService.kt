@@ -29,11 +29,13 @@ class NotificationService: Service() {
       val longExtra = intent!!.getLongExtra(ConstUtils.ITEM_ID, 0)
       // 存在则关闭通知
       if (notificationIds.contains(longExtra.toString())) {
+        notificationIds.remove(longExtra.toString())
         NotificationManager.getInstance().cancelNotification(longExtra)
-        if (notificationIds.size - 1 == 0) {
+        // 保存本地
+        PreferenceManager.getInstance().noticeIds = notificationIds
+        // 判断是否销毁
+        if (notificationIds.size == 0) {
           stopSelf(startId)
-        } else {
-          notificationIds.remove(longExtra.toString())
         }
       }
       // 显示通知
@@ -42,8 +44,8 @@ class NotificationService: Service() {
         if (find != null) {
           NotificationManager.getInstance().showNotification(find)
           notificationIds.add(find.id.toString())
-        } else {
-          throw java.lang.Exception("查无此id")
+          // 保存本地
+          PreferenceManager.getInstance().noticeIds = notificationIds
         }
       }
     } catch (e: Exception) {
@@ -56,6 +58,7 @@ class NotificationService: Service() {
   override fun onDestroy() {
     // 保存本地
     PreferenceManager.getInstance().noticeIds = notificationIds
+    notificationIds.clear()
     super.onDestroy()
   }
 }

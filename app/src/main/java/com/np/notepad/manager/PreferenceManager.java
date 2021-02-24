@@ -51,9 +51,4 @@ public class PreferenceManager {
     public Set<String> getNoticeIds() {
         return sPreferences.getStringSet(APP_NOTICE_IDS, new HashSet<>());
     }
-
-    public boolean existNoticeId(String noticeId) {
-        Set<String> set = sPreferences.getStringSet(APP_NOTICE_IDS, new HashSet<>());
-        return set != null && set.contains(noticeId);
-    }
 }

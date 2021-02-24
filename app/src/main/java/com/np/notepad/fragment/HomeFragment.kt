@@ -103,7 +103,6 @@ class HomeFragment : BaseFragment() {
                 R.id.textView -> startContentFragment(item.id)
                 // 提醒
                 R.id.btnRemind -> {
-                    //通知Intent init
                     if (!item.remind) {
                         item.remind = true
                         DatabaseManager.getInstance().update(item)
@@ -116,15 +115,6 @@ class HomeFragment : BaseFragment() {
                     // 通知
                     callNotificationService(item.id)
                     closeSwipeMenu()
-//                    // 检查是否状态是否同步 以实际通知为准
-//                    if (PreferenceManager.getInstance().existNoticeId(item.id.toString()) != item.remind) {
-//                        if (PreferenceManager.getInstance().existNoticeId(item.id.toString())) {
-//                            item.remind = true
-//                        } else {
-//                            item.setToDefault("remind")
-//                        }
-//                        DatabaseManager.getInstance().update(item)
-//                    }
                 }
                 // 删除
                 R.id.btnDelete -> {

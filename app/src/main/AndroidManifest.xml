@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.np.notepad">
+    <!--白名单权限申请-->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!--通知-->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <!--ACCESS_NETWORK_STATE对于 Glide 加载 URL 并不是必需的，但是它将帮助 Glide 处理*片状网络(flaky network)*和飞行模式-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
