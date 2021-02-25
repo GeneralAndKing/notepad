@@ -2,7 +2,10 @@ package com.np.notepad.manager
 
 import com.np.notepad.model.NoteItem
 import org.litepal.LitePal
-import org.litepal.extension.*
+import org.litepal.extension.delete
+import org.litepal.extension.deleteAll
+import org.litepal.extension.find
+import org.litepal.extension.findAll
 
 class DatabaseManager private constructor() {
 
@@ -33,6 +36,10 @@ class DatabaseManager private constructor() {
    * find all.
    */
   fun getAll(): MutableList<NoteItem> = LitePal.findAll<NoteItem>()
+
+  fun getAllById(ids: LongArray): MutableList<NoteItem> {
+    return LitePal.findAll(NoteItem::class.java, *ids)
+  }
 
   /**
    * find by id

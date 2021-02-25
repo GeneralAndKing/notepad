@@ -49,7 +49,7 @@ class NotificationManager private constructor() {
       ))
       NotificationCompat.Builder(mContext, model.id.toString())
     } else {
-      NotificationCompat.Builder(mContext)
+      NotificationCompat.Builder(mContext, model.id.toString())
     }
     val build = builder.setContentTitle(model.title)
       //当通知内容太长一行显示不了，可以使用setStyle
@@ -67,9 +67,11 @@ class NotificationManager private constructor() {
 //      .setDefaults(NotificationCompat.DEFAULT_ALL)
       //设置优先级
       .setPriority(NotificationCompat.PRIORITY_MAX)
+      // 开启锁屏通知
+      .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
       .build()
-    build.flags = Notification.FLAG_NO_CLEAR
-    mNManager.notify(model.id.toInt(), build)
+      build.flags = Notification.FLAG_NO_CLEAR
+      mNManager.notify(model.id.toInt(), build)
   }
 
   fun cancelNotification(id: Long) {
