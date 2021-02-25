@@ -13,6 +13,11 @@ class ConstUtils private constructor() {
 
         const val ITEM_ID: String = "itemId"
 
+        /**
+         * 显示与否
+         */
+        const val SHOW_OR_NOT: String = "SHOW_OR_NOT"
+
         const val NOTIFICATION_TICKER: String = "您有待做的项目~"
         /**
          * 通知的request值

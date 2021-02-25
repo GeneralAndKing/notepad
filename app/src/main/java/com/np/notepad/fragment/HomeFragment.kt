@@ -1,6 +1,5 @@
 package com.np.notepad.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import com.np.notepad.databinding.FragmentHomeLayoutBinding
 import com.np.notepad.manager.DatabaseManager
 import com.np.notepad.model.NoteItem
 import com.np.notepad.model.enums.ItemSkinEnum
-import com.np.notepad.service.NotificationService
 import com.np.notepad.util.ConstUtils.Companion.ITEM_ID
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog.CheckableDialogBuilder
@@ -106,20 +104,22 @@ class HomeFragment : BaseFragment() {
                     if (!item.remind) {
                         item.remind = true
                         DatabaseManager.getInstance().update(item)
+                        // 通知
+                        callNotificationService(item.id, true)
                     } else {
                         item.setToDefault("remind")
                         DatabaseManager.getInstance().update(item)
                         item.remind = false
+                        // 通知
+                        callNotificationService(item.id, false)
                     }
                     mRecyclerViewAdapter.notifyItemRangeChanged(position, 1)
-                    // 通知
-                    callNotificationService(item.id)
                     closeSwipeMenu()
                 }
                 // 删除
                 R.id.btnDelete -> {
                     removeItem(position, item.id)
-                    callNotificationService(item.id)
+                    callNotificationService(item.id, false)
                     // 判断默认列表需要显示还是隐藏
                     decideEmptyViewShow()}
                 // 置顶
@@ -296,15 +296,6 @@ class HomeFragment : BaseFragment() {
             mRecyclerViewAdapter.notifyDataSetChanged()
             (requireActivity() as MainActivity).isChange = false
         }
-    }
-
-    /**
-     * 调用通知服务
-     */
-    private fun callNotificationService(id: Long) {
-        val it = Intent(requireActivity(), NotificationService::class.java)
-        it.putExtra(ITEM_ID, id)
-        requireActivity().startService(it)
     }
 
     /**

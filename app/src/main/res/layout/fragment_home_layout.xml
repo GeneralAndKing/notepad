@@ -34,6 +34,7 @@
                 android:fitsSystemWindows="false"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/qd_show_img_1"
+                android:background="?attr/qmui_config_color_blue"
                 app:qmui_layout_collapseMode="parallax"
                 app:qmui_layout_collapseParallaxMultiplier="0.7"
                 tools:ignore="MissingPrefix" />

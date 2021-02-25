@@ -27,25 +27,28 @@ class NotificationService: Service() {
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     try {
       val longExtra = intent!!.getLongExtra(ConstUtils.ITEM_ID, 0)
-      // 存在则关闭通知
-      if (notificationIds.contains(longExtra.toString())) {
-        notificationIds.remove(longExtra.toString())
-        NotificationManager.getInstance().cancelNotification(longExtra)
-        // 保存本地
-        PreferenceManager.getInstance().noticeIds = notificationIds
-        // 判断是否销毁
-        if (notificationIds.size == 0) {
-          stopSelf(startId)
-        }
-      }
-      // 显示通知
-      else {
+      val show = intent.getBooleanExtra(ConstUtils.SHOW_OR_NOT, false)
+      // 显示
+      if (show) {
         val find = DatabaseManager.getInstance().find(longExtra)
         if (find != null) {
+          // 显示通知
           NotificationManager.getInstance().showNotification(find)
           notificationIds.add(find.id.toString())
           // 保存本地
           PreferenceManager.getInstance().noticeIds = notificationIds
+        }
+      } else {
+        // 存在则关闭通知
+        if (notificationIds.contains(longExtra.toString())) {
+          notificationIds.remove(longExtra.toString())
+          NotificationManager.getInstance().cancelNotification(longExtra)
+          // 保存本地
+          PreferenceManager.getInstance().noticeIds = notificationIds
+          // 判断是否销毁
+          if (notificationIds.size == 0) {
+            stopSelf(startId)
+          }
         }
       }
     } catch (e: Exception) {

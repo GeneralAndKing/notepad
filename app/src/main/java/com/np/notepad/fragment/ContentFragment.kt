@@ -99,6 +99,10 @@ class ContentFragment : BaseFragment(), View.OnFocusChangeListener, View.OnClick
     noteItem.background = ItemSkinEnum.values()[(ItemSkinEnum.values().indices).random()].name
     if (id != 0L) {
       DatabaseManager.getInstance().update(noteItem)
+      // 判断是否需要刷新通知
+      if (noteItem.remind) {
+        callNotificationService(noteItem.id, true)
+      }
     } else {
       DatabaseManager.getInstance().save(noteItem)
     }
